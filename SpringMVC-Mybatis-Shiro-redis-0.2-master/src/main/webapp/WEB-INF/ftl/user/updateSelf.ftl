@@ -2,7 +2,7 @@
 <html lang="zh-cn">
 	<head>
 		<meta charset="utf-8" />
-		<title>资料修改 —个人中心</title>
+		<title>资料修改 — 个人中心</title>
 		<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
 		<link   rel="icon" href="${basePath}/favicon.ico" type="image/x-icon" />
 		<link   rel="shortcut icon" href="${basePath}/favicon.ico" />
@@ -24,19 +24,29 @@
 					<h2>资料修改</h2>
 					<hr>
 					<form id="formId" enctype="multipart/form-data" action="${basePath}/user/updateSelf.shtml" method="post">
-						  <input type="hidden" value="${token.id}" name="id"/>
-						  <div class="form-group">
-						    <label for="nickname">昵称</label>
-						    <input type="text" class="form-control" autocomplete="off" id="nickname" maxlength="8" name="nickname" value="${token.nickname?default('未设置')}" placeholder="请输入昵称">
-						  </div>
-						  <div class="form-group">
-						    <label for="email">Email（不准修改）</label>
-						    <input type="text" class="form-control " disabled autocomplete="off" id="email" maxlength="64" name="email" value="${token.email?default('未设置')}" placeholder="请输入帐号">
-						  </div>
-						  <div class="form-group">
-							  <button type="submit" class="btn btn-success">确定修改</button>
-						  </div>
-						</form>
+						<input type="hidden" value="${token.id}" name="id"/>
+						<div class="form-group">
+							<label for="email">账号</label>
+							<input type="text" class="form-control " disabled autocomplete="off" id="email" maxlength="20" name="email" value="${token.email?default('未设置')}" placeholder="请输入帐号">
+						</div>
+						<div class="form-group">
+							<label for="nickname">昵称</label>
+							<input type="text" class="form-control" autocomplete="off" id="nickname" maxlength="8" name="nickname" value="${token.nickname?default('未设置')}" placeholder="请输入昵称">
+						</div>
+                        <div class="form-group">
+                            <label for="nickname">性别</label>
+                            <input type="radio" id="sex_1" name="sex" value="1" <#if token.sex==1>checked </#if> >男
+                            <input type="radio" id="sex_2" name="sex" value="2" <#if token.sex==2>checked </#if> >女
+                        </div>
+                        <div class="form-group">
+                            <label for="nickname">手机号码</label>
+                            <input type="text" class="form-control" autocomplete="off" id="phone" maxlength="11" name="phone" value="${token.phone?default('未设置')}" placeholder="请输入昵称">
+                        </div>
+
+						<div class="form-group">
+							<button type="submit" class="btn btn-success">确定修改</button>
+						</div>
+					</form>
 					
 				</div>
 				 <#--地图

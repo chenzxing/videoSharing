@@ -136,8 +136,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						  </shiro:hasPermission>
 						 <shiro:hasPermission name="/role/allocation.shtml">
 						  <li class="active dropdown">
-						      <a href="<%=basePath%>/role/allocation.shtml" title="角色分配（这是个JSP页面）">
-						    	 <i class="glyphicon glyphicon-chevron-right"></i>角色分配（这是个JSP页面）
+						      <a href="<%=basePath%>/role/allocation.shtml" title="角色分配">
+						    	 <i class="glyphicon glyphicon-chevron-right"></i>角色分配
 						      </a>
 						  </li>
 						  </shiro:hasPermission>

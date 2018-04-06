@@ -26,9 +26,25 @@
 							<td>${token.nickname?default('未设置')}</td>
 						</tr>
 						<tr>
-							<th>Email/帐号</th>
+							<th>帐号</th>
 							<td>${token.email?default('未设置')}</td>
 						</tr>
+                        <tr>
+                            <th>性别</th>
+							<td>
+								<#if token.sex==1>
+									男
+							    <#elseif token.sex ==2>
+									女
+								<#else>
+									未设置
+								</#if>
+							</td>
+                        </tr>
+                        <tr>
+                            <th>手机号码</th>
+                            <td>${token.phone?default('未设置')}</td>
+                        </tr>
 						<tr>
 							<th>创建时间</th>
 							<td>${token.createTime?string('yyyy-MM-dd HH:mm')}</td>

@@ -9,35 +9,38 @@
               <li><a href="${basePath}/user/updateSelf.shtml">资料修改</a></li>
               <li><a href="${basePath}/user/updatePswd.shtml">密码修改</a></li>
           </ul>
-	  </li>
+	  </li><!--
 	  <li class="${(index==2)?string('active',' ')} dropdown">
 	      <a href="${basePath}/role/mypermission.shtml">
 	    	 <i class="glyphicon glyphicon-chevron-right"></i>我的权限
 	      </a>
 	  </li>
+	  -->
 	</ul>
 </div>
 </#macro>
+<@shiro.hasAnyRoles name='888888,100002,user66'>
 <#macro member index>
-	<@shiro.hasAnyRoles name='888888,100002,user66'>
 		<div  id="one" class="col-md-2">
 			<ul data-spy="affix" class="nav nav-list nav-tabs nav-stacked bs-docs-sidenav dropdown affix" style="top: 100px; z-index: 100;">
-			  <li class="${(index==1)?string('active',' ')}">
-			      <a href="${basePath}/member/list.shtml">
-			    	 <i class="glyphicon glyphicon-chevron-right"></i>用户列表
-			      </a>
-			  </li>
-			  <li class="${(index==2)?string('active',' ')} dropdown">
-			      <a href="${basePath}/member/online.shtml">
-			    	 <i class="glyphicon glyphicon-chevron-right"></i>在线用户
-			      </a>
-			  </li>
+				<@shiro.hasPermission name="/member/list.shtml">
+				<li class="${(index==1)?string('active',' ')}">
+					  <a href="${basePath}/member/list.shtml">
+						 <i class="glyphicon glyphicon-chevron-right"></i>用户列表
+					  </a>
+				</li>
+				</@shiro.hasPermission>
+				<@shiro.hasPermission name="/member/online.shtml">
+			  	<li class="${(index==2)?string('active',' ')} dropdown">
+					  <a href="${basePath}/member/online.shtml">
+						 <i class="glyphicon glyphicon-chevron-right"></i>在线用户
+					  </a>
+			  	</li>
+				</@shiro.hasPermission>
 			</ul>
 		</div>
-	</@shiro.hasAnyRoles>
 </#macro>
 <#macro role index>
-	<@shiro.hasAnyRoles name='888888,100003,user66'>
 		<div id="one" class="col-md-2">
 			<ul data-spy="affix" class="nav nav-list nav-tabs nav-stacked bs-docs-sidenav dropdown affix" style="top: 100px; z-index: 100;">
 			 
@@ -71,5 +74,5 @@
 			  </@shiro.hasPermission>
 			</ul>
 		</div>
-	</@shiro.hasAnyRoles>   
 </#macro>
+</@shiro.hasAnyRoles>

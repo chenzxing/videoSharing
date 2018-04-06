@@ -274,15 +274,15 @@
 								<form id="boxRoleForm">
                                     <div class="form-group">
                                         <label for="recipient-name" class="control-label">账号:</label>
-                                        <input type="text" class="form-control" name="email" id="email" placeholder="请输入账号"/>
+                                        <input type="text" class="form-control" name="email" id="email" maxlength="20" placeholder="请输入账号"/>
                                     </div>
 									<div class="form-group">
 										<label for="recipient-name" class="control-label">昵称:</label>
-										<input type="text" class="form-control" name="nickname" id="nickname" placeholder="请输入昵称"/>
+										<input type="text" class="form-control" name="nickname" id="nickname" maxlength="8" placeholder="请输入昵称"/>
 									</div>
 									<div class="form-group">
 										<label for="recipient-name" class="control-label">密码:</label>
-										<input type="password" class="form-control" id="pswd" name="pswd"  placeholder="请输入密码">
+										<input type="password" class="form-control" id="pswd" name="pswd"  maxlength="16" placeholder="请输入密码">
 									</div>
                                     <div class="form-group">
                                         <label for="recipient-name" class="control-label">性别:</label>
@@ -291,7 +291,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="recipient-name" class="control-label">手机号码:</label>
-                                        <input type="text" class="form-control" id="phone" name="phone"  placeholder="请输入手机号码">
+                                        <input type="text" class="form-control" id="phone" name="phone"  maxlength="11" placeholder="请输入手机号码">
                                     </div>
 								</form>
 							</div>
@@ -322,15 +322,15 @@
                                     </div>
 									<div class="form-group">
 										<label for="recipient-name" class="control-label">账号:</label>
-										<input type="text" class="form-control" name="email" id="edit_email" placeholder="请输入账号"/>
+										<input type="text" class="form-control" name="email" id="edit_email" maxlength="20" disabled="disabled" placeholder="请输入账号"/>
 									</div>
 									<div class="form-group">
 										<label for="recipient-name" class="control-label">昵称:</label>
-										<input type="text" class="form-control" name="nickname" id="edit_nickname" placeholder="请输入昵称"/>
+										<input type="text" class="form-control" name="nickname" maxlength="8" id="edit_nickname" placeholder="请输入昵称"/>
 									</div>
 									<div class="form-group">
 										<label for="recipient-name" class="control-label">密码:</label>
-										<input type="password" class="form-control" id="edit_pswd" name="pswd"  placeholder="请输入密码">
+										<input type="password" class="form-control" id="edit_pswd" name="pswd" maxlength="16"  placeholder="请输入密码">
 									</div>
 									<div class="form-group">
 										<label for="recipient-name" class="control-label">性别:</label>
@@ -339,7 +339,7 @@
 									</div>
 									<div class="form-group">
 										<label for="recipient-name" class="control-label">手机号码:</label>
-										<input type="text" class="form-control" id="edit_phone" name="phone"  placeholder="请输入手机号码">
+										<input type="text" class="form-control" id="edit_phone" name="phone" maxlength="11"  placeholder="请输入手机号码">
 									</div>
 								</form>
 							</div>
