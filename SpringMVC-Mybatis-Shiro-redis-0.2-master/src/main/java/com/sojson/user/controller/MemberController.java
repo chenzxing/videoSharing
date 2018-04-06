@@ -112,5 +112,6 @@ public class MemberController extends BaseController {
 	public Map<String,Object> forbidUserById(Long id,Long status){
 		return userService.updateForbidUserById(id,status);
 	}
-	
+
+
 }
