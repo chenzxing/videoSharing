@@ -1,8 +1,13 @@
 package com.sojson.user.controller;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import com.sojson.common.utils.AjaxData;
+import com.sojson.common.utils.LoggerUtils;
+import com.sojson.core.shiro.token.manager.TokenManager;
+import com.sojson.user.manager.UserManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -113,5 +118,78 @@ public class MemberController extends BaseController {
 		return userService.updateForbidUserById(id,status);
 	}
 
+	/**
+	 * 用户添加
+	 * @param UUser
+	 * @return
+	 */
+	@RequestMapping(value="addUser",method=RequestMethod.POST)
+	@ResponseBody
+	public Map<String,Object> addUser(UUser user){
+		try {
+			Date date = new Date();
+			user.setCreateTime(date);
+			user.setLastLoginTime(date);
+			//把密码md5
+			user = UserManager.md5Pswd(user);
+			//设置有效
+			user.setStatus(UUser._1);
+
+			//获取当前登录用户的id
+			Long userId = TokenManager.getToken().getId();
+			user.setUserId(userId);
+
+			user = userService.insert(user);
+			resultMap.put("status", 200);
+			resultMap.put("successCount", "添加用户成功");
+		} catch (Exception e) {
+			resultMap.put("status", 500);
+			resultMap.put("message", "添加失败，请刷新后再试！");
+			LoggerUtils.fmtError(getClass(), e, "添加用户报错。source[%s]",user.toString());
+		}
+		return resultMap;
+	}
+
+	/**
+	 * 用户信息
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping(value="editUser_view",method=RequestMethod.POST)
+	@ResponseBody
+	public AjaxData editUser_view(Long id){
+		AjaxData ajaxData=new AjaxData();
+		try {
+
+			UUser user = userService.selectByPrimaryKey(id);
+			ajaxData.setResultCode("0000");
+			ajaxData.setResultMessage("查找成功");
+			ajaxData.setData(user);
+		} catch (Exception e) {
+			ajaxData.setResultCode("0001");
+			ajaxData.setResultMessage("查找失败，请刷新后再试");
+		}
+		return ajaxData;
+	}
+
+	/**
+	 * 用户修改
+	 * @param UUser
+	 * @return
+	 */
+	@RequestMapping(value="editUser",method=RequestMethod.POST)
+	@ResponseBody
+	public Map<String,Object> editUser(UUser user){
+		try {
+			int a = userService.updateByPrimaryKeySelective(user);
+			resultMap.put("status", 200);
+			resultMap.put("successCount", "修改用户成功");
+		} catch (Exception e) {
+			resultMap.put("status", 500);
+			resultMap.put("message", "修改失败，请刷新后再试！");
+			LoggerUtils.fmtError(getClass(), e, "修改用户报错。source[%s]",user.toString());
+		}
+		return resultMap;
+	}
 
 }

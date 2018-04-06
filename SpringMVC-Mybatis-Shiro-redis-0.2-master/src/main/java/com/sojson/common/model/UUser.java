@@ -43,8 +43,22 @@ public class UUser implements Serializable{
     private Date lastLoginTime;
     /**1:有效，0:禁止登录*/
     private Long status;
-    
-    
+
+    /**
+     * 性别（1.男，2.女）
+     */
+    private Long sex;
+
+    /**
+     * 手机号码
+     */
+
+    private String phone;
+
+    /**
+     * 创建人id
+     */
+    private Long userId;
     
     public UUser() {}
     public UUser(UUser user) {
@@ -111,5 +125,29 @@ public class UUser implements Serializable{
     }
     public String toString(){
     	return JSONObject.fromObject(this).toString();
+    }
+
+    public Long getSex() {
+        return sex;
+    }
+
+    public void setSex(Long sex) {
+        this.sex = sex;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 }

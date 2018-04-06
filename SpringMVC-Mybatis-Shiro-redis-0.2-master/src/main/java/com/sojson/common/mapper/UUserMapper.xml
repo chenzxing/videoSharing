@@ -9,9 +9,12 @@
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="last_login_time" property="lastLoginTime" jdbcType="TIMESTAMP" />
     <result column="status" property="status" jdbcType="BIGINT" />
+    <result column="sex" property="sex" jdbcType="BIGINT" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="BIGINT" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, nickname, email, pswd, create_time, last_login_time,status
+    id, nickname, email, pswd, create_time, last_login_time,status,sex,phone,user_id
   </sql>
   <sql id="limit_sql">
   	   <if test="page_sql != null and page_sql != ''">
@@ -44,7 +47,8 @@
   
   <!-- 用户权限分配的分页查询 -->
   <select id="findUserAndRole" resultType="com.sojson.permission.bo.UserRoleAllocationBo">
-  	select u.id,u.nickname,u.email,u.create_time,u.last_login_time,u.status ,group_concat(ur.name) roleNames,group_concat(ur.id)roleIds from
+  	select u.id,u.nickname,u.email,u.create_time,u.last_login_time,u.status ,
+    u.sex,phone,u.user_id,group_concat(ur.name) roleNames,group_concat(ur.id)roleIds from
 	 u_user u
 	left join u_user_role uur on uur.uid = u.id
 	left join u_role ur on ur.id = uur.rid
@@ -98,10 +102,11 @@
   </delete>
   <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.sojson.common.model.UUser" >
     insert into u_user (id, nickname, email, 
-      pswd, create_time, last_login_time,status
+      pswd, create_time, last_login_time,status,sex,phone,user_id
       )
     values (#{id,jdbcType=BIGINT}, #{nickname,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
-      #{pswd,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{lastLoginTime,jdbcType=TIMESTAMP},#{status,jdbcType=BIGINT}
+      #{pswd,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{lastLoginTime,jdbcType=TIMESTAMP},#{status,jdbcType=BIGINT},
+      #{sex,jdbcType=BIGINT}, #{phone,jdbcType=VARCHAR}, #{userId,jdbcType=BIGINT}
       )
   </insert>
   <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id" parameterType="com.sojson.common.model.UUser" >
@@ -128,6 +133,15 @@
       <if test="status != null" >
         status,
       </if>
+      <if test="sex != null" >
+        sex,
+      </if>
+      <if test="phone != null" >
+        phone,
+      </if>
+      <if test="userId != null" >
+        user_id
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -149,7 +163,16 @@
         #{lastLoginTime,jdbcType=TIMESTAMP},
       </if>
       <if test="status != null" >
-        #{status,jdbcType=BIGINT}
+        #{status,jdbcType=BIGINT},
+      </if>
+      <if test="sex != null" >
+        #{sex,jdbcType=BIGINT},
+      </if>
+      <if test="phone != null" >
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=BIGINT}
       </if>
     </trim>
   </insert>
@@ -174,6 +197,15 @@
       <if test="status != null" >
         status = #{status,jdbcType=BIGINT},
       </if>
+      <if test="sex != null" >
+        sex = #{sex,jdbcType=BIGINT},
+      </if>
+      <if test="phone != null" >
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -184,7 +216,10 @@
       pswd = #{pswd,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       last_login_time = #{lastLoginTime,jdbcType=TIMESTAMP},
-      status = #{status,jdbcType=BIGINT}
+      status = #{status,jdbcType=BIGINT},
+      sex = #{sex,jdbcType=BIGINT},
+      phone = #{phone,jdbcType=BIGINT},
+      user_id = #{userId,jdbcType=BIGINT}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

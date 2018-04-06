@@ -74,6 +74,114 @@
 				});
 			}
 			</@shiro.hasPermission>
+
+			<@shiro.hasPermission name="/member/addUser.shtml">
+			<#--添加用户-->
+            function addUser(){
+                var nickname = $('#nickname').val(),
+                        email = $('#email').val(),
+                        pswd = $('#pswd').val(),
+                        sex =$("input[name='sex']:checked").val(),
+                        phone = $('#phone').val();
+                if($.trim(email) == ''){
+                    return layer.msg('账号不能为空。',so.default),!1;
+                }
+                if($.trim(nickname) == ''){
+                    return layer.msg('昵称不能为空。',so.default),!1;
+                }
+                if($.trim(pswd) == ''){
+                    return layer.msg('密码不能为空。',so.default),!1;
+                }
+                if($.trim(sex) == ''){
+                    return layer.msg('性别不能为空。',so.default),!1;
+                }
+                if($.trim(phone) == ''){
+                    return layer.msg('手机号码不能为空。',so.default),!1;
+                }
+			<#--loding-->
+                var load = layer.load();
+                $.post('${basePath}/member/addUser.shtml',
+						{nickname:nickname,email:email,pswd:pswd,sex:sex,phone:phone},
+						function(result){
+							layer.close(load);
+							if(result && result.status != 200){
+								return layer.msg(result.message,so.default),!1;
+							}
+							layer.msg('添加成功。');
+							setTimeout(function(){
+								$('#formId').submit();
+							},1000);
+						},'json');
+            }
+			</@shiro.hasPermission>
+
+			<@shiro.hasPermission name="/member/editUser.shtml">
+			function editBtn(id){
+                var load = layer.load();
+                $.post('${basePath}/member/editUser_view.shtml',
+                        {id:id},
+                        function(data){
+                            layer.close(load);
+                            if(data.resultCode=="0000"){
+                                var data=data.data;
+								$('#id').val(data.id);
+                                $('#edit_email').val(data.email);
+                                $('#edit_nickname').val(data.nickname);
+                                $('#edit_pswd').val(data.pswd);
+                                $('#edit_phone').val(data.phone);
+                                if(data.sex==1){
+                                    $("#sex_1").prop("checked",true);
+								}
+								else{
+                                    $("#sex_2").prop("checked",true);
+								}
+                                $('#edituser').modal();
+                            }
+                            else{
+                                layer.msg('打开修改页面失败。');
+							}
+						},'json');
+			}
+
+			<#--修改用户-->
+            function editUser(){
+                var nickname = $('#edit_nickname').val(),
+                        email = $('#edit_email').val(),
+                        pswd = $('#edit_pswd').val(),
+                        sex =$("input[name='edit_sex']:checked").val(),
+                        phone = $('#edit_phone').val(),
+						id=$("#id").val();
+                if($.trim(email) == ''){
+                    return layer.msg('账号不能为空。',so.default),!1;
+                }
+                if($.trim(nickname) == ''){
+                    return layer.msg('昵称不能为空。',so.default),!1;
+                }
+                if($.trim(pswd) == ''){
+                    return layer.msg('密码不能为空。',so.default),!1;
+                }
+                if($.trim(sex) == ''){
+                    return layer.msg('性别不能为空。',so.default),!1;
+                }
+                if($.trim(phone) == ''){
+                    return layer.msg('手机号码不能为空。',so.default),!1;
+                }
+			<#--loding-->
+                var load = layer.load();
+                $.post('${basePath}/member/editUser.shtml',
+                        {id:id,nickname:nickname,email:email,pswd:pswd,sex:sex,phone:phone},
+                        function(result){
+                            layer.close(load);
+                            if(result && result.status != 200){
+                                return layer.msg(result.message,so.default),!1;
+                            }
+                            layer.msg('修改成功。');
+                            setTimeout(function(){
+                                $('#formId').submit();
+                            },1000);
+                        },'json');
+            }
+			</@shiro.hasPermission>
 		</script>
 	</head>
 	<body data-target="#one" data-spy="scroll">
@@ -93,8 +201,11 @@
 					      </div>
 					     <span class=""> <#--pull-right -->
 				         	<button type="submit" class="btn btn-primary">查询</button>
+							 <@shiro.hasPermission name="/member/addUser.shtml">
+								 <a class="btn btn-success" onclick="$('#adduser').modal();">增加用户</a>
+							 </@shiro.hasPermission>
 				         	<@shiro.hasPermission name="/member/deleteUserById.shtml">
-				         		<button type="button" id="deleteAll" class="btn  btn-danger">Delete</button>
+				         		<button type="button" id="deleteAll" class="btn  btn-danger">删除用户</button>
 				         	</@shiro.hasPermission>
 				         </span>    
 				        </div>
@@ -125,6 +236,9 @@
 											${(it.status==1)?string('禁止登录','激活登录')}
 										</a>
 										</@shiro.hasPermission>
+										<@shiro.hasPermission name="/member/editUser.shtml">
+                                            <a  onclick="editBtn(${it.id})">修改</a>
+										</@shiro.hasPermission>
 										<@shiro.hasPermission name="/member/deleteUserById.shtml">
 										<a href="javascript:_delete([${it.id}]);">删除</a>
 										</@shiro.hasPermission>
@@ -145,6 +259,99 @@
 					</form>
 				</div>
 			</div><#--/row-->
+
+            <!-- 新增用户-->
+			<@shiro.hasPermission name="/member/addUser.shtml">
+			<#--添加弹框-->
+				<div class="modal fade" id="adduser" tabindex="-1" role="dialog" aria-labelledby="adduserLabel">
+					<div class="modal-dialog" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+								<h4 class="modal-title" id="adduserLabel">添加用户</h4>
+							</div>
+							<div class="modal-body">
+								<form id="boxRoleForm">
+                                    <div class="form-group">
+                                        <label for="recipient-name" class="control-label">账号:</label>
+                                        <input type="text" class="form-control" name="email" id="email" placeholder="请输入账号"/>
+                                    </div>
+									<div class="form-group">
+										<label for="recipient-name" class="control-label">昵称:</label>
+										<input type="text" class="form-control" name="nickname" id="nickname" placeholder="请输入昵称"/>
+									</div>
+									<div class="form-group">
+										<label for="recipient-name" class="control-label">密码:</label>
+										<input type="password" class="form-control" id="pswd" name="pswd"  placeholder="请输入密码">
+									</div>
+                                    <div class="form-group">
+                                        <label for="recipient-name" class="control-label">性别:</label>
+                                        <input type="radio" name="sex" value="1">男
+                                        <input type="radio" name="sex" value="2">女
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="recipient-name" class="control-label">手机号码:</label>
+                                        <input type="text" class="form-control" id="phone" name="phone"  placeholder="请输入手机号码">
+                                    </div>
+								</form>
+							</div>
+							<div class="modal-footer">
+                                <button type="button" onclick="addUser();" class="btn btn-primary">保存</button>
+								<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			<#--/添加弹框-->
+			</@shiro.hasPermission>
+
+            <!-- 修改用户-->
+			<@shiro.hasPermission name="/member/editUser.shtml">
+			<#--添加弹框-->
+				<div class="modal fade" id="edituser" tabindex="-1" role="dialog" aria-labelledby="edituserLabel">
+					<div class="modal-dialog" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+								<h4 class="modal-title" id="edituserLabel">修改用户</h4>
+							</div>
+							<div class="modal-body">
+								<form id="boxRoleForm">
+                                    <div class="form-group" style="display: none">
+                                        <input type="text" class="form-control" name="id" id="id" />
+                                    </div>
+									<div class="form-group">
+										<label for="recipient-name" class="control-label">账号:</label>
+										<input type="text" class="form-control" name="email" id="edit_email" placeholder="请输入账号"/>
+									</div>
+									<div class="form-group">
+										<label for="recipient-name" class="control-label">昵称:</label>
+										<input type="text" class="form-control" name="nickname" id="edit_nickname" placeholder="请输入昵称"/>
+									</div>
+									<div class="form-group">
+										<label for="recipient-name" class="control-label">密码:</label>
+										<input type="password" class="form-control" id="edit_pswd" name="pswd"  placeholder="请输入密码">
+									</div>
+									<div class="form-group">
+										<label for="recipient-name" class="control-label">性别:</label>
+										<input type="radio" id="sex_1" name="edit_sex" value="1">男
+										<input type="radio" id="sex_2" name="edit_sex" value="2">女
+									</div>
+									<div class="form-group">
+										<label for="recipient-name" class="control-label">手机号码:</label>
+										<input type="text" class="form-control" id="edit_phone" name="phone"  placeholder="请输入手机号码">
+									</div>
+								</form>
+							</div>
+							<div class="modal-footer">
+								<button type="button" onclick="editUser();" class="btn btn-primary">保存</button>
+								<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			<#--/添加弹框-->
+			</@shiro.hasPermission>
 		</div>
 			
 	</body>
