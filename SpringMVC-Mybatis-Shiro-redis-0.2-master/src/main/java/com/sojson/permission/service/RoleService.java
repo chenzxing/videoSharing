@@ -32,6 +32,9 @@ public interface RoleService {
 	//根据用户ID查询角色（role），放入到Authorization里。
 	Set<String> findRoleByUserId(Long userId);
 
+	//根据用户ID查询角色id（roleId），放入到Authorization里。
+	Set<String> findRoleIdByUserId(Long userId);
+
 	List<URole> findNowAllPermission();
 	//初始化数据
 	void initData();

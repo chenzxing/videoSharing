@@ -24,4 +24,7 @@ public interface URoleMapper {
 	List<URole> findNowAllPermission(Map<String, Object> map);
 	
 	void initData();
+
+	//查找用户的所拥有的角色id
+	Set<String> findRoleIdByUserId(Long id);
 }

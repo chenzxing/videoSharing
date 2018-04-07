@@ -48,6 +48,11 @@
   <select id="findRoleByUserId" resultType="java.lang.String">
   		select r.type from u_role r,u_user_role ur where ur.rid = r.id and ur.uid = #{id,jdbcType=BIGINT}
   </select>
+
+    <select id="findRoleIdByUserId" resultType="java.lang.String">
+        select r.id from u_role r,u_user_role ur where ur.rid = r.id and ur.uid = #{id,jdbcType=BIGINT}
+    </select>
+
   <!-- 普通的分页查询 -->
   <select id="findAll" resultMap="BaseResultMap" >
   	 select 

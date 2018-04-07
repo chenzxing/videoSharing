@@ -111,6 +111,11 @@ public class RoleServiceImpl extends BaseMybatisDao<URoleMapper> implements Role
 	}
 
 	@Override
+	public Set<String> findRoleIdByUserId(Long userId) {
+		return roleMapper.findRoleIdByUserId(userId);
+	}
+
+	@Override
 	public List<URole> findNowAllPermission() {
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("userId", TokenManager.getUserId());

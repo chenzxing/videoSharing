@@ -30,6 +30,8 @@
 					return _delete(array);
 				});
 				</@shiro.hasPermission>
+
+                selectRoleById();
 			});
 			<@shiro.hasPermission name="/member/deleteUserById.shtml">
 			//根据ID数组，删除
@@ -83,6 +85,18 @@
                         pswd = $('#pswd').val(),
                         sex =$("input[name='sex']:checked").val(),
                         phone = $('#phone').val();
+                //获取角色id
+                obj = document.getElementsByName("add_role");
+                check_val = [];
+                var check_val ="" ;
+                for(k in obj){
+                    if(obj[k].checked){
+                        if(k!=0){
+                            check_val=check_val+",";
+                        }
+                        check_val=check_val+obj[k].value;
+                    }
+                }
                 if($.trim(email) == ''){
                     return layer.msg('账号不能为空。',so.default),!1;
                 }
@@ -98,10 +112,16 @@
                 if($.trim(phone) == ''){
                     return layer.msg('手机号码不能为空。',so.default),!1;
                 }
-			<#--loding-->
+                if(!isPoneAvailable(phone)){
+                    return layer.msg('请输入正确的手机号码。',so.default),!1;
+                }
+                if($.trim(check_val).length<1){
+                    return layer.msg('角色不能为空。',so.default),!1;
+                }
+				<#--loding-->
                 var load = layer.load();
                 $.post('${basePath}/member/addUser.shtml',
-						{nickname:nickname,email:email,pswd:pswd,sex:sex,phone:phone},
+						{nickname:nickname,email:email,pswd:pswd,sex:sex,phone:phone,roleId:check_val},
 						function(result){
 							layer.close(load);
 							if(result && result.status != 200){
@@ -115,6 +135,7 @@
             }
 			</@shiro.hasPermission>
 
+			<!-- 用户修改-->
 			<@shiro.hasPermission name="/member/editUser.shtml">
 			function editBtn(id){
                 var load = layer.load();
@@ -123,17 +144,23 @@
                         function(data){
                             layer.close(load);
                             if(data.resultCode=="0000"){
-                                var data=data.data;
-								$('#id').val(data.id);
-                                $('#edit_email').val(data.email);
-                                $('#edit_nickname').val(data.nickname);
-                                $('#edit_pswd').val(data.pswd);
-                                $('#edit_phone').val(data.phone);
-                                if(data.sex==1){
+                                var roleId =data.data.roleIds;
+                                var user=data.data.user;
+
+								$('#id').val(user.id);
+                                $('#edit_email').val(user.email);
+                                $('#edit_nickname').val(user.nickname);
+                                $('#edit_pswd').val(user.pswd);
+                                $('#edit_phone').val(user.phone);
+                                if(user.sex==1){
                                     $("#sex_1").prop("checked",true);
 								}
 								else{
                                     $("#sex_2").prop("checked",true);
+								}
+								for(var i=0;i<roleId.length;i++){
+                                    var checkeId="#edit_role_"+roleId[i];
+                                    $(checkeId).attr('checked', "checked")
 								}
                                 $('#edituser').modal();
                             }
@@ -151,6 +178,17 @@
                         sex =$("input[name='edit_sex']:checked").val(),
                         phone = $('#edit_phone').val(),
 						id=$("#id").val();
+                //获取角色id
+                obj = document.getElementsByName("edit_role");
+                var check_val ="" ;
+                for(k in obj){
+                    if(obj[k].checked){
+                        if(k!=0){
+                            check_val=check_val+",";
+                        }
+                        check_val=check_val+obj[k].value;
+					}
+                }
                 if($.trim(email) == ''){
                     return layer.msg('账号不能为空。',so.default),!1;
                 }
@@ -166,10 +204,16 @@
                 if($.trim(phone) == ''){
                     return layer.msg('手机号码不能为空。',so.default),!1;
                 }
-			<#--loding-->
+                if(!isPoneAvailable(phone)){
+                    return layer.msg('请输入正确的手机号码。',so.default),!1;
+				}
+                if($.trim(check_val).length<1){
+                    return layer.msg('角色不能为空。',so.default),!1;
+                }
+				<#--loding-->
                 var load = layer.load();
                 $.post('${basePath}/member/editUser.shtml',
-                        {id:id,nickname:nickname,email:email,pswd:pswd,sex:sex,phone:phone},
+                        {id:id,nickname:nickname,email:email,pswd:pswd,sex:sex,phone:phone,roleId:check_val},
                         function(result){
                             layer.close(load);
                             if(result && result.status != 200){
@@ -182,6 +226,39 @@
                         },'json');
             }
 			</@shiro.hasPermission>
+
+            /*
+            *根据角色ID选择权限，分配权限操作。
+            */
+            function selectRoleById(id){
+                var load = layer.load();
+                $.post("/role/selectRoleByUserId.shtml",{id:id},function(result){
+                    layer.close(load);
+                    if(result && result.length){
+                        var add_html ="";
+                        var edit_html ="";
+                        $.each(result,function(){
+                            add_html=add_html+"<label><input type='checkbox' id='role_"+this.id+"' name='add_role' value='"+this.id+"'>"+this.name+"</label>";
+                            edit_html=edit_html+"<label><input type='checkbox' id='edit_role_"+this.id+"' name='edit_role' value='"+this.id+"'>"+this.name+"</label>";
+                        });
+                        $("#role_btn").html(add_html);
+                        $("#edit_role_btn").html(edit_html);
+                        return;
+                    }else{
+                        return layer.msg('没有获取到用户数据，请先注册数据。',so.default);
+                    }
+                },'json');
+            }
+
+            //手机号码正则校验
+            function isPoneAvailable(phone) {
+                var myreg=/^[1][3,4,5,7,8][0-9]{9}$/;
+                if (!myreg.test(phone)) {
+                    return false;
+                } else {
+                    return true;
+                }
+            }
 		</script>
 	</head>
 	<body data-target="#one" data-spy="scroll">
@@ -293,6 +370,12 @@
                                         <label for="recipient-name" class="control-label">手机号码:</label>
                                         <input type="text" class="form-control" id="phone" name="phone"  maxlength="11" placeholder="请输入手机号码">
                                     </div>
+                                    <div class="form-group">
+                                        <label for="recipient-name" class="control-label">角色：</label>
+                                        <div id="role_btn">
+
+										</div>
+                                    </div>
 								</form>
 							</div>
 							<div class="modal-footer">
@@ -302,10 +385,10 @@
 						</div>
 					</div>
 				</div>
-			<#--/添加弹框-->
+			<#--/添加用户弹框-->
 			</@shiro.hasPermission>
 
-            <!-- 修改用户-->
+            <!-- 修改用户弹窗-->
 			<@shiro.hasPermission name="/member/editUser.shtml">
 			<#--添加弹框-->
 				<div class="modal fade" id="edituser" tabindex="-1" role="dialog" aria-labelledby="edituserLabel">
@@ -341,6 +424,12 @@
 										<label for="recipient-name" class="control-label">手机号码:</label>
 										<input type="text" class="form-control" id="edit_phone" name="phone" maxlength="11"  placeholder="请输入手机号码">
 									</div>
+                                    <div class="form-group">
+                                        <label for="recipient-name" class="control-label">角色：</label>
+                                        <div id="edit_role_btn">
+
+                                        </div>
+                                    </div>
 								</form>
 							</div>
 							<div class="modal-footer">
@@ -352,6 +441,8 @@
 				</div>
 			<#--/添加弹框-->
 			</@shiro.hasPermission>
+
+
 		</div>
 			
 	</body>

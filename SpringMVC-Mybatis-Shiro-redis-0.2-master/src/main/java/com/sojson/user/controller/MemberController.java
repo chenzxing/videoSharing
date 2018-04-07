@@ -1,12 +1,11 @@
 package com.sojson.user.controller;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import com.sojson.common.utils.AjaxData;
 import com.sojson.common.utils.LoggerUtils;
 import com.sojson.core.shiro.token.manager.TokenManager;
+import com.sojson.permission.service.RoleService;
 import com.sojson.user.manager.UserManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -55,6 +54,8 @@ public class MemberController extends BaseController {
 	CustomSessionManager customSessionManager;
 	@Autowired
 	UUserService userService;
+	@Autowired
+	RoleService roleService;
 	/**
 	 * 用户列表管理
 	 * @return
@@ -140,6 +141,10 @@ public class MemberController extends BaseController {
 			user.setUserId(userId);
 
 			user = userService.insert(user);
+
+			//给用户添加角色
+			userService.addRole2User(user.getId(),user.getRoleId());
+
 			resultMap.put("status", 200);
 			resultMap.put("successCount", "添加用户成功");
 		} catch (Exception e) {
@@ -162,9 +167,13 @@ public class MemberController extends BaseController {
 		try {
 
 			UUser user = userService.selectByPrimaryKey(id);
+			Set<String> roleIds= roleService.findRoleIdByUserId(id);
+			Map<String,Object> map=new HashMap<String, Object>();
+			map.put("user",user);
+			map.put("roleIds",roleIds);
 			ajaxData.setResultCode("0000");
 			ajaxData.setResultMessage("查找成功");
-			ajaxData.setData(user);
+			ajaxData.setData(map);
 		} catch (Exception e) {
 			ajaxData.setResultCode("0001");
 			ajaxData.setResultMessage("查找失败，请刷新后再试");
@@ -182,6 +191,8 @@ public class MemberController extends BaseController {
 	public Map<String,Object> editUser(UUser user){
 		try {
 			int a = userService.updateByPrimaryKeySelective(user);
+			//给用户添加角色
+			userService.addRole2User(user.getId(),user.getRoleId());
 			resultMap.put("status", 200);
 			resultMap.put("successCount", "修改用户成功");
 		} catch (Exception e) {

@@ -59,7 +59,12 @@ public class UUser implements Serializable{
      * 创建人id
      */
     private Long userId;
-    
+
+    /**
+     * 角色id
+     */
+    private String roleId;
+
     public UUser() {}
     public UUser(UUser user) {
 		this.id = user.getId();
@@ -149,5 +154,13 @@ public class UUser implements Serializable{
 
     public void setUserId(Long userId) {
         this.userId = userId;
+    }
+
+    public String getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(String roleId) {
+        this.roleId = roleId;
     }
 }
