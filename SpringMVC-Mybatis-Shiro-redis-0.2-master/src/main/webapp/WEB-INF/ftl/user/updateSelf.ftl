@@ -31,7 +31,7 @@
 						</div>
 						<div class="form-group">
 							<label for="nickname">昵称</label>
-							<input type="text" class="form-control" autocomplete="off" id="nickname" maxlength="8" name="nickname" value="${token.nickname?default('未设置')}" placeholder="请输入昵称">
+							<input type="text" class="form-control" autocomplete="off" id="nickname" maxlength="8" name="nickname" value="${token.nickname!}" placeholder="请输入昵称">
 						</div>
                         <div class="form-group">
                             <label for="nickname">性别</label>
@@ -40,7 +40,8 @@
                         </div>
                         <div class="form-group">
                             <label for="nickname">手机号码</label>
-                            <input type="text" class="form-control" autocomplete="off" id="phone" maxlength="11" name="phone" value="${token.phone?default('未设置')}" placeholder="请输入昵称">
+                            <input type="text" class="form-control" autocomplete="off" id="phone" maxlength="11" onkeyup="value=value.replace(/[^\d]/g,'')"
+								   name="phone" value="${token.phone!}" placeholder="请输入手机号码">
                         </div>
 
 						<div class="form-group">
