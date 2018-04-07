@@ -33,8 +33,8 @@
 					</ul>
 				</li>	  
 				<#--拥有 角色888888（管理员） ||  100002（用户中心）-->
-				<@shiro.hasAnyRoles name='888888,100002,user66'>
-					<li class="dropdown ${(index==3)?string('active','')}">
+				<@shiro.hasAnyRoles name='888888,100002,user66,pt8888'>
+					<li class="dropdown ${(index==2)?string('active','')}">
 						<a aria-expanded="false" aria-haspopup="true"  role="button" data-toggle="dropdown" class="dropdown-toggle" href="${basePath}/member/list.shtml">
 							用户中心<span class="caret"></span>
 						</a>
@@ -47,6 +47,8 @@
 							</@shiro.hasPermission>
 						</ul>
 					</li>
+				</@shiro.hasAnyRoles>
+				  <@shiro.hasAnyRoles name='888888,100002,pt8888'>
 					<li class="dropdown ${(index==3)?string('active','')}">
 						<a aria-expanded="false" aria-haspopup="true"  role="button" data-toggle="dropdown" class="dropdown-toggle" href="${basePath}/permission/index.shtml">
 							权限管理<span class="caret"></span>
@@ -54,9 +56,6 @@
 						<ul class="dropdown-menu">
 							<@shiro.hasPermission name="/role/index.shtml">
 								<li><a href="${basePath}/role/index.shtml">角色列表</a></li>
-							</@shiro.hasPermission>
-							<@shiro.hasPermission name="/role/allocation.shtml">
-								<li><a href="${basePath}/role/allocation.shtml">角色分配</a></li>
 							</@shiro.hasPermission>
 							<@shiro.hasPermission name="/permission/index.shtml">
 								<li><a href="${basePath}/permission/index.shtml">权限列表</a></li>

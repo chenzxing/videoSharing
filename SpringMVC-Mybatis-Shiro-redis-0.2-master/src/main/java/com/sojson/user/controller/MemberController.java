@@ -62,8 +62,29 @@ public class MemberController extends BaseController {
 	 */
 	@RequestMapping(value="list")
 	public ModelAndView list(ModelMap map,Integer pageNo,String findContent){
-		
+		//获取当前登录用户的id
+		Long userId = TokenManager.getToken().getId();
+		Set<String> roleIds= roleService.findRoleByUserId(userId);
+
+		boolean check=false;
+		Iterator<String> it = roleIds.iterator();
+		while(it.hasNext()){
+			String roleType=it.next();
+			//判断是否有下一个
+			if(roleType.equals("888888")){
+				check=true;
+				continue;
+			}
+			else if(roleType.equals("pt8888")){
+				check=true;
+				continue;
+			}
+		}
+
 		map.put("findContent", findContent);
+		if(!check){
+			map.put("userId",userId);
+		}
 		Pagination<UUser> page = userService.findByPage(map,pageNo,pageSize);
 		map.put("page", page);
 		return new ModelAndView("member/list");
@@ -190,6 +211,13 @@ public class MemberController extends BaseController {
 	@ResponseBody
 	public Map<String,Object> editUser(UUser user){
 		try {
+
+			//校验密码是否修改了，如果修改了则重新加密密码
+			UUser userOld = userService.selectByPrimaryKey(user.getId());
+			if(!userOld.getPswd().equals(user.getPswd())){
+				//把密码md5
+				user = UserManager.md5Pswd(user);
+			}
 			int a = userService.updateByPrimaryKeySelective(user);
 			//给用户添加角色
 			userService.addRole2User(user.getId(),user.getRoleId());

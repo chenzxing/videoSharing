@@ -24,10 +24,15 @@
   
   <sql id="where_all">
   	<where>
-  	<if test="findContent != null and findContent !='' " >
+  	  <if test="findContent != null and findContent !='' " >
         and (
         LOWER(nickname) like  LOWER(CONCAT("%",#{findContent,jdbcType=VARCHAR},"%")) or
         LOWER(email) like  LOWER(CONCAT("%",#{findContent,jdbcType=VARCHAR},"%"))
+        )
+      </if>
+      <if test="userId != null and userId !='' " >
+        and (
+          LOWER(user_id) =  LOWER(#{userId,jdbcType=BIGINT})
         )
       </if>
       </where>

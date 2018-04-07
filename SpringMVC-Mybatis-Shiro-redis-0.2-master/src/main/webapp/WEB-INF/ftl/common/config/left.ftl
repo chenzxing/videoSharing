@@ -19,7 +19,7 @@
 	</ul>
 </div>
 </#macro>
-<@shiro.hasAnyRoles name='888888,100002,user66'>
+<@shiro.hasAnyRoles name='888888,100002,user66,pt8888'>
 <#macro member index>
 		<div  id="one" class="col-md-2">
 			<ul data-spy="affix" class="nav nav-list nav-tabs nav-stacked bs-docs-sidenav dropdown affix" style="top: 100px; z-index: 100;">
@@ -48,13 +48,6 @@
 			  <li class="${(index==1)?string('active',' ')}">
 			      <a href="${basePath}/role/index.shtml">
 			    	 <i class="glyphicon glyphicon-chevron-right"></i>角色列表
-			      </a>
-			  </li>
-			  </@shiro.hasPermission>
-			 <@shiro.hasPermission name="/role/allocation.shtml">
-			  <li class="${(index==2)?string('active',' ')} dropdown">
-			      <a href="${basePath}/role/allocation.shtml">
-			    	 <i class="glyphicon glyphicon-chevron-right"></i>角色分配
 			      </a>
 			  </li>
 			  </@shiro.hasPermission>
