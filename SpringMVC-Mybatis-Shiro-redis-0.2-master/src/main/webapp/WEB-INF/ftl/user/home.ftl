@@ -19,7 +19,7 @@
         <div class="col-md-10">
             <h2>首页</h2>
             <hr>
-            <div>内容</div>
+            <div>内容吧</div>
         </div>
     </div>
 </div>
