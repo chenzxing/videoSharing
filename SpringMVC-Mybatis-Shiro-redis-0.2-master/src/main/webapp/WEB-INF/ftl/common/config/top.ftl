@@ -47,6 +47,16 @@
 							</@shiro.hasPermission>
 						</ul>
 					</li>
+                    <li class="dropdown ${(index==4)?string('active','')}">
+                        <a aria-expanded="false" aria-haspopup="true"  role="button" data-toggle="dropdown" class="dropdown-toggle" href="${basePath}/home/view.shtml">
+                            视频管理<span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+							<@shiro.hasPermission name="/operations/index.shtml">
+                                <li><a href="${basePath}/operations/index.shtml">视频管理</a></li>
+							</@shiro.hasPermission>
+                        </ul>
+                    </li>
 				</@shiro.hasAnyRoles>
 				  <@shiro.hasAnyRoles name='888888,100002,pt8888'>
 					<li class="dropdown ${(index==3)?string('active','')}">

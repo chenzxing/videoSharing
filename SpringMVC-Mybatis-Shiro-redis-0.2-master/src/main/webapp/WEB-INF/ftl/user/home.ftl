@@ -15,9 +15,13 @@
 <body data-target="#one" data-spy="scroll">
 <@_top.top 0/>
 <div class="container" style="padding-bottom: 15px;min-height: 300px; margin-top: 40px;">
-    <h1>首页</h1>
-<#--/row-->
+    <div class="row">
+        <div class="col-md-10">
+            <h2>首页</h2>
+            <hr>
+            <div>内容</div>
+        </div>
+    </div>
 </div>
-
 </body>
 </html>
