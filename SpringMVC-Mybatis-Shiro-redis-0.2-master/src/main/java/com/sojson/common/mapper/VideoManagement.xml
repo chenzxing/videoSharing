@@ -24,9 +24,10 @@
     <result column="By4" property="By4" jdbcType="VARCHAR" />
     <result column="By5" property="By5" jdbcType="VARCHAR" />
 
+
   </resultMap>
   <sql id="Base_Column_List" >
-    ID, PromulgatorID, VideoName, VideoAddress,SKB, Alias,QRCodeAddress,IsFixedPrice,FixedPrice,MinPrice,MaxPrice,UpdateTime,UploadDate,Passed,PassedTiime,Status,By1,By2,By3,By4,By5
+    videoinfo.ID, PromulgatorID, VideoName, VideoAddress,SKB, Alias,QRCodeAddress,IsFixedPrice,FixedPrice,MinPrice,MaxPrice,UpdateTime,UploadDate,Passed,PassedTiime,videoinfo.Status,By1,By2,By3,By4,By5,u_user.nickname as UserName
   </sql>
   <sql id="limit_sql">
   	   <if test="page_sql != null and page_sql != ''">
@@ -44,20 +45,21 @@
 
       </if>
 
-        and (Status = 1)and PromulgatorID in(select id from u_user where id ='1' )
+        and (videoinfo.Status = 1) and PromulgatorID in (select id from u_user where id =  #{userid,jdbcType=BIGINT} or id in (select id from u_user where user_id =#{userid,jdbcType=BIGINT}) or id in ( select id from u_user where user_id  in  ( select id from u_user where user_id =#{userid,jdbcType=BIGINT})))
 
       </where>
   </sql>
   <select id="findAll" resultMap="BaseResultMap" >
     select
-    <include refid="Base_Column_List" />
-    from videoinfo
+    videoinfo.ID, PromulgatorID, VideoName, VideoAddress,SKB, Alias,QRCodeAddress,IsFixedPrice,FixedPrice,MinPrice,MaxPrice,UpdateTime,UploadDate,Passed,PassedTiime,videoinfo.Status,By1,By2,By3,By4,By5,u_user.nickname as UserName
+
+    from videoinfo join u_user on u_user.id = videoinfo.PromulgatorID
 
     <include refid="where_all"/>
     <include refid="limit_sql" />
   </select>
   <select id="findCount" resultMap="BaseResultMap" >
-    select count(ID) from  videoinfo
+    select count(videoinfo.ID) from  videoinfo
 
     <include refid="where_all" />
   </select>
@@ -73,7 +75,7 @@
         )
 
       </if>
-      and (Status = 1) and PromulgatorID in(select id from u_user where id ='1' )
+      and (Status = 1) and PromulgatorID in(select id from u_user where id =  #{userid,jdbcType=BIGINT} or id in (select id from u_user where user_id =#{userid,jdbcType=BIGINT}) or id in ( select id from u_user where user_id  in  ( select id from u_user where user_id =#{userid,jdbcType=BIGINT})))
     </where>
     group by ID
   </select>

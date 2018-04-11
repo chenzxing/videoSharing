@@ -57,6 +57,15 @@ public class Video implements Serializable {
     private String By4;
     private String By5;
 
+    public String getUserName() {
+        return UserName;
+    }
+
+    public void setUserName(String userName) {
+        UserName = userName;
+    }
+
+    private String UserName;
 
     public Video() {}
 

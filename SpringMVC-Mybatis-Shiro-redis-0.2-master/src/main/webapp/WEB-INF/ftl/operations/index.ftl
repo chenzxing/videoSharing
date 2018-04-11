@@ -225,6 +225,7 @@
                     <tr>
                         <th><input type="checkbox" id="checkAll"/>  全选</th>
                         <th>编号</th>
+                        <th>上传人</th>
                         <th>影片名称</th>
                         <th>价格(元)</th>
                         <th>短链接</th>
@@ -236,6 +237,7 @@
 								<tr>
                                     <td><input value="${it.id}" check='box' type="checkbox" /></td>
                                     <td>${it_index + 1 }</td>
+                                    <td>${it.userName?default('')}</td>
                                     <td>${it.videoName?default('未设置')}</td>
                                     <td>${(it.isFixedPrice==1)?string(it.fixedPrice?default('未设置'),it.minPrice?default('0') +'~'+ it.maxPrice?default('0') )}</td>
                                     <td>${it.SKB?default('未设置')}</td>

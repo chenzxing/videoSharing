@@ -2,12 +2,14 @@ package com.sojson.operations.controller;
 
 import com.sojson.common.controller.BaseController;
 
+import com.sojson.common.model.UUser;
 import com.sojson.common.utils.AjaxData;
 import com.sojson.common.utils.LoggerUtils;
 import com.sojson.core.mybatis.page.Pagination;
 import com.sojson.core.shiro.session.CustomSessionManager;
 import com.sojson.core.shiro.token.manager.TokenManager;
 import com.sojson.operations.service.VideoService;
+import com.sojson.user.service.UUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -18,12 +20,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import com.sojson.common.model.Video;
 
+
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.text.SimpleDateFormat;
 
 @Controller
@@ -32,7 +32,8 @@ import java.text.SimpleDateFormat;
 public class ManagementVideoController  extends BaseController {
 
 
-
+    @Autowired
+    UUserService userService;
     @Autowired
     CustomSessionManager customSessionManager;
     @Autowired
@@ -44,8 +45,12 @@ public class ManagementVideoController  extends BaseController {
     @RequestMapping(value="index")
     public ModelAndView index(String findContent, ModelMap modelMap,Integer pageNo){
         modelMap.put("findContent", findContent);
-        Pagination<Video> role = videoService.findPage(modelMap,pageNo,pageSize);
-        return new ModelAndView("operations/index","page",role);
+        //获取当前登录用户的id
+        Long userId = TokenManager.getToken().getId();
+        modelMap.put("userid", userId);
+        Pagination<Video> videos = videoService.findPage(modelMap,pageNo,pageSize);
+
+        return new ModelAndView("operations/index","page",videos);
     }
     /**
      * 根据ID删除，
