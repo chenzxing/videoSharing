@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sojson.common.dao.VideoManagement" >
+  <resultMap id="BaseResultMap" type="com.sojson.common.model.Video" >
+    <id column="ID" property="ID" jdbcType="BIGINT" />
+    <result column="PromulgatorID" property="PromulgatorID" jdbcType="BIGINT" />
+    <result column="VideoName" property="VideoName" jdbcType="VARCHAR" />
+    <result column="VideoAddress" property="VideoAddress" jdbcType="VARCHAR" />
+    <result column="SKB" property="SKB" jdbcType="VARCHAR" />
+    <result column="Alias" property="Alias" jdbcType="VARCHAR" />
+    <result column="QRCodeAddress" property="QRCodeAddress" jdbcType="VARCHAR" />
+    <result column="IsFixedPrice" property="IsFixedPrice" jdbcType="BIGINT" />
+    <result column="FixedPrice" property="FixedPrice" jdbcType="DECIMAL" />
+    <result column="MinPrice" property="MinPrice" jdbcType="DECIMAL" />
+    <result column="MaxPrice" property="MaxPrice" jdbcType="DECIMAL" />
+    <result column="UpdateTime" property="UpdateTime" jdbcType="VARCHAR" />
+    <result column="UploadDate" property="UploadDate" jdbcType="VARCHAR" />
+    <result column="Passed" property="Passed" jdbcType="BIGINT" />
+    <result column="PassedTiime" property="PassedTiime" jdbcType="VARCHAR" />
+    <result column="Status" property="Status" jdbcType="BIGINT" />
+    <result column="By1" property="By1" jdbcType="VARCHAR" />
+    <result column="By2" property="By2" jdbcType="VARCHAR" />
+    <result column="By3" property="By3" jdbcType="VARCHAR" />
+    <result column="By4" property="By4" jdbcType="VARCHAR" />
+    <result column="By5" property="By5" jdbcType="VARCHAR" />
+
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, PromulgatorID, VideoName, VideoAddress,SKB, Alias,QRCodeAddress,IsFixedPrice,FixedPrice,MinPrice,MaxPrice,UpdateTime,UploadDate,Passed,PassedTiime,Status,By1,By2,By3,By4,By5
+  </sql>
+  <sql id="limit_sql">
+  	   <if test="page_sql != null and page_sql != ''">
+      	${page_sql}
+      </if>
+
+  </sql>
+  
+  <sql id="where_all">
+  	<where>
+  	<if test="findContent != null and findContent !='' " >
+        and (
+        LOWER(VideoName) like  LOWER(CONCAT("%",#{findContent,jdbcType=VARCHAR},"%"))
+        )
+
+      </if>
+
+        and (Status = 1)and PromulgatorID in(select id from u_user where id ='1' )
+
+      </where>
+  </sql>
+  <select id="findAll" resultMap="BaseResultMap" >
+    select
+    <include refid="Base_Column_List" />
+    from videoinfo
+
+    <include refid="where_all"/>
+    <include refid="limit_sql" />
+  </select>
+  <select id="findCount" resultMap="BaseResultMap" >
+    select count(ID) from  videoinfo
+
+    <include refid="where_all" />
+  </select>
+
+  <!-- 视频的分页查询 -->
+  <select id="findVideoByName" resultType="com.sojson.common.model.Video">
+    select * from
+    videoinfo
+    <where>
+      <if test="findContent != null and findContent !='' " >
+        and (
+        LOWER(VideoName) like  LOWER(CONCAT("%",#{findContent,jdbcType=VARCHAR},"%"))
+        )
+
+      </if>
+      and (Status = 1) and PromulgatorID in(select id from u_user where id ='1' )
+    </where>
+    group by ID
+  </select>
+
+
+  <select id="selectByPrimaryKey" resultType="com.sojson.common.model.Video">
+    select * from
+    videoinfo
+     where ID = #{ID,jdbcType=BIGINT}
+      and (Status = 1)
+
+    group by ID
+  </select>
+
+
+
+
+  <update id="deleteVideoById" parameterType="com.sojson.common.model.Video" >
+    update videoinfo
+    set Status = 0
+    where ID = #{ID,jdbcType=BIGINT}
+  </update>
+
+
+  <update id="updateVideoInfo" parameterType="com.sojson.common.model.Video" >
+    update videoinfo
+    <set >
+    <if test="VideoName != null" >
+      VideoName = #{VideoName,jdbcType=VARCHAR},
+    </if>
+      <if test="IsFixedPrice != null" >
+        IsFixedPrice = #{IsFixedPrice,jdbcType=BIGINT},
+      </if>
+
+      <if test="FixedPrice != null" >
+        FixedPrice = #{FixedPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="MinPrice != null" >
+        MinPrice = #{MinPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="MaxPrice != null" >
+        MaxPrice = #{MaxPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="UpdateTime != null" >
+        UpdateTime = #{UpdateTime,jdbcType=VARCHAR},
+      </if>
+    </set >
+    where ID = #{ID,jdbcType=BIGINT}
+  </update>
+
+  <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.sojson.common.model.Video" >
+    insert into videoinfo ( PromulgatorID, VideoName, VideoAddress,SKB, Alias,QRCodeAddress,IsFixedPrice,FixedPrice,MinPrice,MaxPrice,UpdateTime,UploadDate,Passed,PassedTiime,Status
+ )
+    values ( #{PromulgatorID,jdbcType=BIGINT}, #{VideoName,jdbcType=VARCHAR}, #{VideoAddress,jdbcType=VARCHAR},
+     #{SKB,jdbcType=VARCHAR}, #{Alias,jdbcType=VARCHAR}, #{QRCodeAddress,jdbcType=VARCHAR},
+     #{IsFixedPrice,jdbcType=BIGINT}, #{FixedPrice,jdbcType=DECIMAL}, #{MinPrice,jdbcType=DECIMAL},
+     #{MaxPrice,jdbcType=DECIMAL}, #{UpdateTime,jdbcType=VARCHAR}, #{UploadDate,jdbcType=VARCHAR},
+       #{Passed,jdbcType=BIGINT}, #{PassedTiime,jdbcType=VARCHAR}, #{Status,jdbcType=BIGINT}
+      )
+  </insert>
+
+
+</mapper>
