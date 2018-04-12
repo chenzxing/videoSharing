@@ -322,14 +322,27 @@
                                             <input type="text"  onkeyup= "if( isNaN(this.value) || (this.value.indexOf('.') != -1  &&  this.value.length - this.value.indexOf('.')>3) ){alert('只能输入数字并且小数点后只能保留两位');this.value='';}"  class="form-control" style="width: 150px" name="FixedPrice" id="FixedPrice" maxlength="10" placeholder="请输入固定价格"/>
                                         </div>
                                     </div>
+                                        </div>
+
+                                    <div class="form-group">
+                                        <label for="recipient-name" class="control-label">  </label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="recipient-name" class="control-label">  </label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="recipient-name" class="control-label">  </label>
                                     </div>
 
+
+                                    <div class="form-group" align="left"  style="float:left">
+
+                                        <input type="file" name="addfile" id="addfile">
+                                    </div>
                                 </form>
                             </div>
 
-                            <div class="form-group">
-                                <label for="recipient-name" class="control-label">  </label>
-                            </div>
+
                             <div class="form-group">
                                 <label for="recipient-name" class="control-label">  </label>
                             </div>
