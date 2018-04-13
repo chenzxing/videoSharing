@@ -185,7 +185,11 @@
 
 
 		<!-- 其他常用包 begin -->
-
+		<dependency>
+			<groupId>commons-net</groupId>
+			<artifactId>commons-net</artifactId>
+			<version>1.4.1</version>
+		</dependency>
 		<dependency>
 			<groupId>commons-attributes</groupId>
 			<artifactId>commons-attributes-api</artifactId>
@@ -345,7 +349,6 @@
 			<version>2.7.4</version>
 		</dependency>
 		<!-- /Spring 升级4+ 依赖的JSON包 -->
-
 
 	</dependencies>
 </project>
