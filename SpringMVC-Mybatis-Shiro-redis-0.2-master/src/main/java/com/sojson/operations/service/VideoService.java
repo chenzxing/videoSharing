@@ -23,4 +23,6 @@ public interface VideoService {
 	Video selectByPrimaryKey(Long id);
 
 	int insert(Video video);
+
+
 }

@@ -71,4 +71,5 @@ public class VideoServiceimpl extends BaseMybatisDao<VideoManagement> implements
       return   videoManagement.insert(entity);
 
     }
+
 }

@@ -143,8 +143,15 @@
                         FixedPrice = $('#FixedPrice').val(),
                         IsFixedPrice =$("input[name='IsFixedPrice']:checked").val(),
                         MaxPrice = $('#MaxPrice').val();
+               // a = $('#ck_attach_path').val();
 
+               var fileresult = file();
+               if(fileresult && fileresult.status != 200){
 
+                   return layer.msg(fileresult.message,so.default),!1;
+               }
+                var aaaaa = fileresult.url;
+                var aaaaaa = fileresult.currentTime;
 
                 if($.trim(VideoName) == ''){
                     return layer.msg('视频名称不能为空。',so.default),!1;
@@ -174,7 +181,7 @@
             <#--loding-->
                 var load = layer.load();
                 $.post('${basePath}/operations/addVideo.shtml',
-                        {videoName:VideoName,MinPrice:MinPrice,FixedPrice:FixedPrice,IsFixedPrice:IsFixedPrice,MaxPrice:MaxPrice},
+                        {videoName:VideoName,MinPrice:MinPrice,FixedPrice:FixedPrice,IsFixedPrice:IsFixedPrice,MaxPrice:MaxPrice,MaxPrice:MaxPrice},
                         function(result){
                             layer.close(load);
                             if(result && result.status != 200){
@@ -189,6 +196,33 @@
         </@shiro.hasPermission>
 
 
+        //文件传到后台的方法
+        function file()
+        {
+            var result ;
+            debugger;
+            var formData = new FormData();
+            formData.append("file", $("#ck_attach_path")[0].files[0]);
+            $.ajax({
+                url: '${basePath}/operations/uploadVideo.shtml',
+                type: 'post',
+                data: formData,
+                datatype:'JSON',
+                fileElementId: 'fileContent',
+                // 告诉jQuery不要去处理发送的数据
+                processData: false,
+                // 告诉jQuery不要去设置Content-Type请求头
+                contentType: false,
+                cache: false,
+                traditional: true,
+                async : false,
+                success: function (data) {
+                  // $('#img').attr('src', data);
+                    result = data;
+                }
+            });
+            return result;
+        }
 
     </script>
 </head>
@@ -337,10 +371,15 @@
 
                                     <div class="form-group" align="left"  style="float:left">
 
-                                        <input type="file" name="addfile" id="addfile">
+
+
                                     </div>
                                 </form>
                             </div>
+                            <form action="${basePath}/operations/uploadVideo.shtml" method="post" enctype="multipart/form-data">
+                                <input type="file" name="file" id="ck_attach_path" style="width:98%;"/>
+                                <input type="submit">
+                            </form>
 
 
                             <div class="form-group">
