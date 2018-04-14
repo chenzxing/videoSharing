@@ -265,7 +265,7 @@ public class ManagementVideoController  extends BaseController {
                // String filePath = "F://"+url+currentTime+newName+extName;
                  //   file.transferTo(new File(filePath));
 
-                    connect(url, "192.168.0.103", 21, "administrator", "123");
+                    connect(url, "120.27.234.43", 21, "ftpuser", "ftp317380!@#");
 
                     InputStream inputStream = file.getInputStream();
                     FileInputStream input = (FileInputStream) (inputStream);
