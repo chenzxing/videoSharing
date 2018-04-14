@@ -30,6 +30,23 @@
                     return _delete(array);
                 });
 				</@shiro.hasPermission>
+
+            <@shiro.hasPermission name="/operations/generate.shtml">
+				//全选
+				so.id('generateAll').on('click',function(){
+                    var checkeds = $('[check=box]:checked');
+                    if(!checkeds.length){
+                        return layer.msg('请选择要生成的视频。',so.default),!0;
+                    }
+                    var array = [];
+                    checkeds.each(function(){
+                        array.push(this.value);
+                    });
+                    return generateBtn(array);
+                });
+            </@shiro.hasPermission>
+
+
         });
 			<@shiro.hasPermission name="/operations/deleteVideoById.shtml">
 			//根据ID数组，删除
@@ -174,6 +191,10 @@
                         return layer.msg('最高价格必须高于最低价格。',so.default),!1;
                     }
                 }
+
+                var load = layer.load();
+
+
                 var fileresult = file();//开始上传视频
                 if(fileresult && fileresult.status != 200){
 
@@ -184,7 +205,7 @@
                 var Alias = fileresult.currentTime;
 
             <#--loding-->
-                var load = layer.load();
+
                 $.post('${basePath}/operations/addVideo.shtml',
                         {videoName:VideoName,MinPrice:MinPrice,FixedPrice:FixedPrice,IsFixedPrice:IsFixedPrice,MaxPrice:MaxPrice,VideoAddress:VideoAddress,By1:fileName,Alias:Alias},
                         function(result){
@@ -229,6 +250,15 @@
             return result;
         }
 
+
+        <@shiro.hasPermission name="/operations/generate.shtml">
+			//根据ID数组，删除
+			function generateBtn(ids){
+                $('#generate').modal();
+            }
+        </@shiro.hasPermission>
+
+
     </script>
 </head>
 <body data-target="#one" data-spy="scroll">
@@ -249,9 +279,12 @@
                     </div>
                     <span class=""> <#--pull-right -->
 				         	<button type="submit" class="btn btn-primary">查询</button>
-							 <@shiro.hasPermission name="/operations/addVideo.shtml">
-								 <a class="btn btn-success" onclick="$('#addVideo').modal();">增加视频</a>
+							 <@shiro.hasPermission name="/operations/generate.shtml">
+									<button type="button" id="generateAll" class="btn  btn-danger">生成</button>
                              </@shiro.hasPermission>
+                         <@shiro.hasPermission name="/operations/addVideo.shtml">
+								 <a class="btn btn-success" onclick="$('#addVideo').modal();">增加视频</a>
+                         </@shiro.hasPermission>
 				         	<@shiro.hasPermission name="/operations/deleteVideoById.shtml">
 				         		<button type="button" id="deleteAll" class="btn  btn-danger">删除视频</button>
                             </@shiro.hasPermission>
@@ -282,7 +315,10 @@
                                     <td>${it.SKB?default('未设置')}</td>
                                     <td>${it.uploadDate}</td>
                                     <td>
-										<@shiro.hasPermission name="/operations/editVideo.shtml">
+										<@shiro.hasPermission name="/operations/generate.shtml">
+										<a href="javascript:generateBtn([${it.id}]);">生成</a>
+                                        </@shiro.hasPermission>
+                                        <@shiro.hasPermission name="/operations/editVideo.shtml">
 										<a href="javascript:editBtn([${it.id}]);">编辑</a>
                                         </@shiro.hasPermission>
 										<@shiro.hasPermission name="/operations/deleteVideoById.shtml">
@@ -481,7 +517,28 @@
             <#--/添加弹框-->
             </@shiro.hasPermission>
 
+    <!-- 修改用户弹窗-->
+			<@shiro.hasPermission name="/operations/generate.shtml">
+            <#--添加弹框-->
+				<div class="modal fade" id="generate" tabindex="-1" role="dialog" aria-labelledby="generateLabel">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <h4 class="modal-title" id="generateLabel">视频短链接信息</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div class="form-group">
 
+                            </div>
+                        </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            <#--/添加弹框-->
+            </@shiro.hasPermission>
 
 </div>
 

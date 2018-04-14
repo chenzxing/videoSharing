@@ -246,7 +246,8 @@ public class ManagementVideoController  extends BaseController {
     @ResponseBody
     public Map<String,Object> uploadVideo(@RequestParam MultipartFile file){
         try {
-            String url= "/Video/";
+            String url= "";
+            //String url= "/Video/";
             String guid = java.util.UUID.randomUUID().toString();
             boolean result =false;
             //获取文件名
