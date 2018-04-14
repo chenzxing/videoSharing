@@ -142,16 +142,14 @@
                         MinPrice = $('#MinPrice').val(),
                         FixedPrice = $('#FixedPrice').val(),
                         IsFixedPrice =$("input[name='IsFixedPrice']:checked").val(),
-                        MaxPrice = $('#MaxPrice').val();
-               // a = $('#ck_attach_path').val();
+                        MaxPrice = $('#MaxPrice').val(),
+                f = $('#ck_attach_path').val();
 
-               var fileresult = file();
-               if(fileresult && fileresult.status != 200){
+                if($.trim(f) == ''){
+                    return layer.msg('请选择上传视频。',so.default),!1;
+                }
 
-                   return layer.msg(fileresult.message,so.default),!1;
-               }
-                var aaaaa = fileresult.url;
-                var aaaaaa = fileresult.currentTime;
+
 
                 if($.trim(VideoName) == ''){
                     return layer.msg('视频名称不能为空。',so.default),!1;
@@ -176,12 +174,19 @@
                         return layer.msg('最高价格必须高于最低价格。',so.default),!1;
                     }
                 }
+                var fileresult = file();//开始上传视频
+                if(fileresult && fileresult.status != 200){
 
+                    return layer.msg(fileresult.message,so.default),!1;
+                }
+                var VideoAddress = fileresult.url +fileresult.currentTime+fileresult.extName;
+                var fileName = fileresult.fileName;
+                var Alias = fileresult.currentTime;
 
             <#--loding-->
                 var load = layer.load();
                 $.post('${basePath}/operations/addVideo.shtml',
-                        {videoName:VideoName,MinPrice:MinPrice,FixedPrice:FixedPrice,IsFixedPrice:IsFixedPrice,MaxPrice:MaxPrice,MaxPrice:MaxPrice},
+                        {videoName:VideoName,MinPrice:MinPrice,FixedPrice:FixedPrice,IsFixedPrice:IsFixedPrice,MaxPrice:MaxPrice,VideoAddress:VideoAddress,By1:fileName,Alias:Alias},
                         function(result){
                             layer.close(load);
                             if(result && result.status != 200){
@@ -371,15 +376,12 @@
 
                                     <div class="form-group" align="left"  style="float:left">
 
-
+                                        <input type="file" name="file" id="ck_attach_path" style="width:98%;"/>
 
                                     </div>
                                 </form>
                             </div>
-                            <form action="${basePath}/operations/uploadVideo.shtml" method="post" enctype="multipart/form-data">
-                                <input type="file" name="file" id="ck_attach_path" style="width:98%;"/>
-                                <input type="submit">
-                            </form>
+
 
 
                             <div class="form-group">
