@@ -113,7 +113,7 @@ public class ManagementVideoController  extends BaseController {
 
         for (Video video:
         videos.getList()) {
-
+            video.setSKB( "?movie_id=" +  video.getId());
         }
 
 
@@ -247,14 +247,14 @@ public class ManagementVideoController  extends BaseController {
     public Map<String,Object> uploadVideo(@RequestParam MultipartFile file){
         try {
             String url= "/Video/";
-
+            String guid = java.util.UUID.randomUUID().toString();
             boolean result =false;
             //获取文件名
             String fileName = file.getOriginalFilename();
             //文件扩展名
             String extName = fileName.substring(fileName.lastIndexOf("."));
 
-            long currentTime=System.currentTimeMillis();
+            long currentTime=System.currentTimeMillis() ;
 
             // 判断文件是否为空
             if (!file.isEmpty()) {
@@ -269,14 +269,16 @@ public class ManagementVideoController  extends BaseController {
                     InputStream inputStream = file.getInputStream();
                     FileInputStream input = (FileInputStream) (inputStream);
 
-                   result =   upload(currentTime+extName,input);
+                   result =   upload(currentTime+guid.substring(0,4)+extName,input);
 
             }
 
             if(result)
             {
+                resultMap.put("fileName", fileName);
+                resultMap.put("extName", extName);
                 resultMap.put("url", url);
-                resultMap.put("currentTime", currentTime );
+                resultMap.put("currentTime", currentTime+guid.substring(0,4) );
                 resultMap.put("status", 200);
                 resultMap.put("successCount", "添加视频成功");
             }
