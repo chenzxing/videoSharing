@@ -12,6 +12,7 @@
     <script  src="${basePath}/js/common/layer/layer.js"></script>
     <script  src="${basePath}/js/common/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     <script  src="${basePath}/js/shiro.demo.js"></script>
+    <script  language="javascript" type="text/javascript" src="${basePath}/js/My97DatePicker/WdatePicker.js"></script>
     <script >
         so.init(function(){
             //初始化全选。
@@ -43,17 +44,29 @@
             <#--引入左侧菜单-->
                 <@_left.financial 2/>
                 <div class="col-md-10">
-                    <h2>每日表</h2>
+                    <h2>每日报表</h2>
                     <hr>
                     <form method="post" action="" id="formId" class="form-inline">
                         <div clss="well">
                             <div class="form-group">
-                                <input type="text" class="form-control" style="width: 300px;" value="${findContent?default('')}"
-                                       name="findContent" id="findContent" placeholder="输入角色类型 / 角色名称">
+                                用&nbsp;户&nbsp;名：
+                                <input type="text" class="form-control" style="width: 180px;" value="${userName?default('')}"
+                                       name="userName" id="userName" placeholder="输入用户名称">
+                                &nbsp;&nbsp;
+                                视频名称：
+                                <input type="text" class="form-control" style="width: 180px;" value="${videoName?default('')}"
+                                       name="videoName" id="videoName" placeholder="输入视频名称">
+                                <br><br>
+                                开始时间：
+                                <input type="text" value="${startDate?default('')}" id="startDate" name="startDate" class="form-control" style="width: 180px"
+                                       onclick="WdatePicker({dateFmt:'yyyy-MM-dd' ,maxDate:'#F{$dp.$D(\'endDate\')}'});"/>
+                                &nbsp;&nbsp;
+                                结束时间：
+                                <input type="text" value="${endDate?default('')}" id="endDate" name="endDate" class="form-control" style="width: 180px"
+                                       onclick="WdatePicker({dateFmt:'yyyy-MM-dd' ,minDate:'#F{$dp.$D(\'startDate\')}'});" />
+                                &nbsp;&nbsp;&nbsp;&nbsp;
+                                <button type="submit" class="btn btn-primary">查询</button>
                             </div>
-                            <span class=""> <#--pull-right -->
-				         	<button type="submit" class="btn btn-primary">查询</button>
-                            </span>
                         </div>
                         <hr>
                         <table class="table table-bordered">

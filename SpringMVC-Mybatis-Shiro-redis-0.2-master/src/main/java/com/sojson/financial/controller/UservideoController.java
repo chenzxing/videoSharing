@@ -14,6 +14,8 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.Date;
+
 import static com.sojson.common.controller.BaseController.pageSize;
 
 @Controller
@@ -29,12 +31,15 @@ public class UservideoController extends BaseController {
      * @return
      */
     @RequestMapping(value="index")
-    public ModelAndView index(ModelMap map,Integer pageNo,String findContent){
+    public ModelAndView index(ModelMap map, Integer pageNo, String userName, String videoName, String startDate, String endDate){
 
-        map.put("findContent", findContent);
+        map.put("userName", userName);
+        map.put("videoName", videoName);
+        map.put("startDate", startDate);
+        map.put("endDate", endDate);
         Pagination<Uservideo> page = uservideoService.findPage(map,pageNo,pageSize);
         map.put("page", page);
-        return new ModelAndView("financial/total_report");
+        return new ModelAndView("financial/total_report",map);
     }
 
     /**
@@ -42,8 +47,11 @@ public class UservideoController extends BaseController {
      * @return
      */
     @RequestMapping(value="index_everyday")
-    public ModelAndView index_everyday(ModelMap map,Integer pageNo,String findContent){
-        map.put("findContent", findContent);
+    public ModelAndView index_everyday(ModelMap map,Integer pageNo,String userName, String videoName, String startDate, String endDate){
+        map.put("userName", userName);
+        map.put("videoName", videoName);
+        map.put("startDate", startDate);
+        map.put("endDate", endDate);
         Pagination<Uservideo> page = uservideoService.findPageEveryday(map,pageNo,pageSize);
         map.put("page", page);
         return new ModelAndView("financial/everyday_report");
