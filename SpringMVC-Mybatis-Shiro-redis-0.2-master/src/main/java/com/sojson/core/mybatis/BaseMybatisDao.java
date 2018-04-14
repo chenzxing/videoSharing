@@ -197,8 +197,7 @@ public class BaseMybatisDao<T> extends SqlSessionDaoSupport {
 			/**
 			 * 处理Count
 			 */
-			PreparedStatement ps = getPreparedStatement4Count(countCode, countSql
-					.getParameterMappings(), params, conn);
+			PreparedStatement ps = getPreparedStatement4Count(countCode, countSql.getParameterMappings(), params, conn);
 			ps.execute();
 			ResultSet set = ps.getResultSet();
 

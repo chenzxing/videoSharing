@@ -57,6 +57,19 @@
 							</@shiro.hasPermission>
                         </ul>
                     </li>
+                    <li class="dropdown ${(index==5)?string('active','')}">
+                        <a aria-expanded="false" aria-haspopup="true"  role="button" data-toggle="dropdown" class="dropdown-toggle" href="${basePath}/home/view.shtml">
+                            财务管理<span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+							<@shiro.hasPermission name="/uservideo/index.shtml">
+                                <li><a href="${basePath}/uservideo/index.shtml">总报表</a></li>
+							</@shiro.hasPermission>
+							<@shiro.hasPermission name="/uservideo/index_everyday.shtml">
+                                <li><a href="${basePath}/uservideo/index_everyday.shtml">每日报表</a></li>
+							</@shiro.hasPermission>
+                        </ul>
+                    </li>
 				</@shiro.hasAnyRoles>
 				  <@shiro.hasAnyRoles name='888888,100002,pt8888'>
 					<li class="dropdown ${(index==3)?string('active','')}">

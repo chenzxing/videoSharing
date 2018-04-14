@@ -53,6 +53,26 @@
         </ul>
     </div>
 </#macro>
+<#macro financial index>
+    <div  id="one" class="col-md-2">
+        <ul data-spy="affix" class="nav nav-list nav-tabs nav-stacked bs-docs-sidenav dropdown affix" style="top: 100px; z-index: 100;">
+			<@shiro.hasPermission name="/uservideo/index.shtml">
+                <li class="${(index==1)?string('active',' ')}">
+                    <a href="${basePath}/uservideo/index.shtml">
+                        <i class="glyphicon glyphicon-chevron-right"></i>总报表
+                    </a>
+                </li>
+			</@shiro.hasPermission>
+			<@shiro.hasPermission name="/uservideo/index_everyday.shtml">
+                <li class="${(index==2)?string('active',' ')}">
+                    <a href="${basePath}/uservideo/index_everyday.shtml">
+                        <i class="glyphicon glyphicon-chevron-right"></i>每日报表
+                    </a>
+                </li>
+			</@shiro.hasPermission>
+        </ul>
+    </div>
+</#macro>
 <#macro role index>
 		<div id="one" class="col-md-2">
 			<ul data-spy="affix" class="nav nav-list nav-tabs nav-stacked bs-docs-sidenav dropdown affix" style="top: 100px; z-index: 100;">
