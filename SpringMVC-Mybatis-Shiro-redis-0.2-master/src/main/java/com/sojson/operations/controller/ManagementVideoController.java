@@ -5,6 +5,7 @@ import com.sojson.common.controller.BaseController;
 import com.sojson.common.model.UUser;
 import com.sojson.common.utils.AjaxData;
 import com.sojson.common.utils.LoggerUtils;
+import com.sojson.core.config.IConfig;
 import com.sojson.core.mybatis.page.Pagination;
 import com.sojson.core.shiro.session.CustomSessionManager;
 import com.sojson.core.shiro.token.manager.TokenManager;
@@ -112,8 +113,8 @@ public class ManagementVideoController  extends BaseController {
         Pagination<Video> videos = videoService.findPage(modelMap,pageNo,pageSize);
 
         for (Video video:
-        videos.getList()) {
-            video.setSKB( "?movie_id=" +  video.getId());
+                videos.getList()) {
+            video.setSKB(IConfig.get("domain.videoarea") + "?movie_id=" +  video.getId());
         }
 
 
@@ -196,6 +197,16 @@ public class ManagementVideoController  extends BaseController {
         return ajaxData;
     }
 
+    /**
+     * 视频信息
+     * @param id
+     * @return
+     */
+    @RequestMapping(value="seleep",method=RequestMethod.POST)
+    @ResponseBody
+    public void seleep(){
+
+    }
 
 
     /**
@@ -255,22 +266,29 @@ public class ManagementVideoController  extends BaseController {
             //文件扩展名
             String extName = fileName.substring(fileName.lastIndexOf("."));
 
+            if(!extName.toLowerCase().equals(".mp4"))
+            {
+
+                resultMap.put("status", 500);
+                resultMap.put("message", "添加失败，暂时只支持MP4格式！");
+                return resultMap;
+            }
+
             long currentTime=System.currentTimeMillis() ;
 
             // 判断文件是否为空
             if (!file.isEmpty()) {
 
 
+                // String filePath = "F://"+url+currentTime+newName+extName;
+                //   file.transferTo(new File(filePath));
 
-               // String filePath = "F://"+url+currentTime+newName+extName;
-                 //   file.transferTo(new File(filePath));
+                connect(IConfig.get("domain.url"), IConfig.get("domain.ftpip"), 21, IConfig.get("domain.ftpuser"), IConfig.get("domain.ftppwd"));
 
-                    connect(url, "120.27.234.43", 21, "ftpuser", "ftp317380!@#");
+                InputStream inputStream = file.getInputStream();
+                FileInputStream input = (FileInputStream) (inputStream);
 
-                    InputStream inputStream = file.getInputStream();
-                    FileInputStream input = (FileInputStream) (inputStream);
-
-                   result =   upload(currentTime+guid.substring(0,4)+extName,input);
+                result =   upload(currentTime+guid.substring(0,4)+extName,input);
 
             }
 

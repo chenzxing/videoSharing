@@ -29,7 +29,7 @@
                     });
                     return _delete(array);
                 });
-				</@shiro.hasPermission>
+                </@shiro.hasPermission>
 
             <@shiro.hasPermission name="/operations/generate.shtml">
 				//全选
@@ -67,7 +67,7 @@
                     layer.close(index);
                 });
             }
-			</@shiro.hasPermission>
+            </@shiro.hasPermission>
         <!-- 用户修改-->
 			<@shiro.hasPermission name="/operations/editVideo.shtml">
 			function editBtn(id){
@@ -121,7 +121,7 @@
                         return layer.msg('固定价格不能为空。',so.default),!1;
                     }
                 }
-               else {
+                else {
                     if($.trim(MaxPrice) == ''){
                         return layer.msg('最高价格不能为空。',so.default),!1;
                     }
@@ -139,7 +139,7 @@
                 $.post('${basePath}/operations/editVideo.shtml',
                         {id:id,videoName:VideoName,MinPrice:MinPrice,FixedPrice:FixedPrice,IsFixedPrice:IsFixedPrice,MaxPrice:MaxPrice},
 
-                function(result){
+                        function(result){
                             layer.close(load);
                             if(result && result.status != 200){
                                 return layer.msg(result.message,so.default),!1;
@@ -154,50 +154,50 @@
 
         <@shiro.hasPermission name="/operations/addVideo.shtml">
         <#--添加视频-->
-            function addVideo(){
+            function addVideo() {
                 var VideoName = $('#VideoName').val(),
                         MinPrice = $('#MinPrice').val(),
                         FixedPrice = $('#FixedPrice').val(),
-                        IsFixedPrice =$("input[name='IsFixedPrice']:checked").val(),
+                        IsFixedPrice = $("input[name='IsFixedPrice']:checked").val(),
                         MaxPrice = $('#MaxPrice').val(),
-                f = $('#ck_attach_path').val();
+                        f = $('#ck_attach_path').val();
 
-                if($.trim(f) == ''){
-                    return layer.msg('请选择上传视频。',so.default),!1;
+                if ($.trim(f) == '') {
+                    return layer.msg('请选择上传视频。', so.default), !1;
                 }
 
 
-
-                if($.trim(VideoName) == ''){
-                    return layer.msg('视频名称不能为空。',so.default),!1;
+                if ($.trim(VideoName) == '') {
+                    return layer.msg('视频名称不能为空。', so.default), !1;
                 }
-                if($.trim(IsFixedPrice) == ''){
-                    return layer.msg('请选择是否固定价。',so.default),!1;
+                if ($.trim(IsFixedPrice) == '') {
+                    return layer.msg('请选择是否固定价。', so.default), !1;
                 }
-                if($.trim(IsFixedPrice) == '1'){
+                if ($.trim(IsFixedPrice) == '1') {
 
-                    if($.trim(FixedPrice) == ''){
-                        return layer.msg('固定价格不能为空。',so.default),!1;
+                    if ($.trim(FixedPrice) == '') {
+                        return layer.msg('固定价格不能为空。', so.default), !1;
                     }
                 }
                 else {
-                    if($.trim(MaxPrice) == ''){
-                        return layer.msg('最高价格不能为空。',so.default),!1;
+                    if ($.trim(MaxPrice) == '') {
+                        return layer.msg('最高价格不能为空。', so.default), !1;
                     }
-                    if($.trim(MinPrice) == ''){
-                        return layer.msg('最低价格不能为空。',so.default),!1;
+                    if ($.trim(MinPrice) == '') {
+                        return layer.msg('最低价格不能为空。', so.default), !1;
                     }
-                    if(parseFloat(MaxPrice)  < parseFloat(MinPrice)){
-                        return layer.msg('最高价格必须高于最低价格。',so.default),!1;
+                    if (parseFloat(MaxPrice) < parseFloat(MinPrice)) {
+                        return layer.msg('最高价格必须高于最低价格。', so.default), !1;
                     }
                 }
 
                 var load = layer.load();
 
-
                 var fileresult = file();//开始上传视频
-                if(fileresult && fileresult.status != 200){
 
+
+                if(fileresult !=null && fileresult.status != 200){
+                    layer.close(load);
                     return layer.msg(fileresult.message,so.default),!1;
                 }
                 var VideoAddress = fileresult.url +fileresult.currentTime+fileresult.extName;
@@ -226,7 +226,7 @@
         function file()
         {
             var result ;
-            debugger;
+
             var formData = new FormData();
             formData.append("file", $("#ck_attach_path")[0].files[0]);
             $.ajax({
@@ -243,7 +243,7 @@
                 traditional: true,
                 async : false,
                 success: function (data) {
-                  // $('#img').attr('src', data);
+                    // $('#img').attr('src', data);
                     result = data;
                 }
             });
@@ -252,9 +252,24 @@
 
 
         <@shiro.hasPermission name="/operations/generate.shtml">
-			//根据ID数组，删除
+			//根据ID数组，获取
 			function generateBtn(ids){
-                $('#generate').modal();
+
+                var load = layer.load();
+                $.post('${basePath}/operations/generate.shtml',{ids:ids.join(',')},function(result){
+                    layer.close(load);
+                    if(result && result.status != 200){
+                        return layer.msg(result.message,so.default),!0;
+                    }else{
+
+                        setTimeout(function(){
+
+                        },1000);
+                    }
+                },'json');
+
+
+                
             }
         </@shiro.hasPermission>
 
@@ -305,7 +320,7 @@
                         <th>操作</th>
                     </tr>
 						<#if page?exists && page.list?size gt 0 >
-							<#list page.list as it>
+                            <#list page.list as it>
 								<tr>
                                     <td><input value="${it.id}" check='box' type="checkbox" /></td>
                                     <td>${it_index + 1 }</td>
@@ -323,15 +338,15 @@
                                         </@shiro.hasPermission>
 										<@shiro.hasPermission name="/operations/deleteVideoById.shtml">
 										<a href="javascript:_delete([${it.id}]);">删除</a>
-										</@shiro.hasPermission>
+                                        </@shiro.hasPermission>
                                     </td>
                                 </tr>
-							</#list>
-						<#else>
+                            </#list>
+                        <#else>
 							<tr>
                                 <td class="text-center danger" colspan="6">没有找到视频</td>
                             </tr>
-						</#if>
+                        </#if>
                 </table>
 					<#if page?exists>
 						<div class="pagination pull-right">
@@ -361,43 +376,43 @@
                                     </div>
 
 
-                                        <label for="recipient-name" class="control-label">收款金额:</label>
-                                        <div class="form-group "  >
-                                            <div class="form-group"align="left" style="float:left">
-                                                <input type="radio" checked  name="IsFixedPrice" value="0" >区间价（元）</input>
-                                            </div>
-                                            <div class="form-group"align="left" style="float:left">
-                                                <label for="recipient-name" style="width: 30px" class="control-label">  </label>
-                                            </div>
-                                                <div class="form-group"align="left" style="float:left">
-                                                <input type="text" class="form-control" name="MinPrice" id="MinPrice" maxlength="10" placeholder="请输入最低价格" onkeyup= "if( isNaN(this.value) || (this.value.indexOf('.') != -1  &&  this.value.length - this.value.indexOf('.')>3) ){alert('只能输入数字并且小数点后只能保留两位');this.value='';}"/>
+                                    <label for="recipient-name" class="control-label">收款金额:</label>
+                                    <div class="form-group "  >
+                                        <div class="form-group"align="left" style="float:left">
+                                            <input type="radio" checked  name="IsFixedPrice" value="0" >区间价（元）</input>
+                                        </div>
+                                        <div class="form-group"align="left" style="float:left">
+                                            <label for="recipient-name" style="width: 30px" class="control-label">  </label>
+                                        </div>
+                                        <div class="form-group"align="left" style="float:left">
+                                            <input type="text" class="form-control" name="MinPrice" id="MinPrice" maxlength="10" placeholder="请输入最低价格" onkeyup= "if( isNaN(this.value) || (this.value.indexOf('.') != -1  &&  this.value.length - this.value.indexOf('.')>3) ){alert('只能输入数字并且小数点后只能保留两位');this.value='';}"/>
 
-                                                </div>
-                                            <div class="form-group"align="left" style="float:left">
-                                                <label for="recipient-name" style="width: 20px" class="control-label">  </label>
-                                            </div>
-                                            <div class="form-group"align="left" style="float:left">
-                                                <label for="recipient-name"   class="control-label"> ~ </label>
-                                            </div>
-                                            <div class="form-group"align="left"  style="float:right">
-                                                <input type="text" class="form-control"  name="MaxPrice" id="MaxPrice" maxlength="10" placeholder="请输入最高价格"  onkeyup= "if( isNaN(this.value) || (this.value.indexOf('.') != -1  &&  this.value.length - this.value.indexOf('.')>3) ){alert('只能输入数字并且小数点后只能保留两位');this.value='';}"/>
+                                        </div>
+                                        <div class="form-group"align="left" style="float:left">
+                                            <label for="recipient-name" style="width: 20px" class="control-label">  </label>
+                                        </div>
+                                        <div class="form-group"align="left" style="float:left">
+                                            <label for="recipient-name"   class="control-label"> ~ </label>
+                                        </div>
+                                        <div class="form-group"align="left"  style="float:right">
+                                            <input type="text" class="form-control"  name="MaxPrice" id="MaxPrice" maxlength="10" placeholder="请输入最高价格"  onkeyup= "if( isNaN(this.value) || (this.value.indexOf('.') != -1  &&  this.value.length - this.value.indexOf('.')>3) ){alert('只能输入数字并且小数点后只能保留两位');this.value='';}"/>
 
-                                          </div>
+                                        </div>
 
 
                                         <div class="form-group" align="left"  style="float:left">
                                             <div class="form-group" align="left"  style="float:left">
-                                            <input type="radio" name="IsFixedPrice" value="1">固定价（元）</input>
+                                                <input type="radio" name="IsFixedPrice" value="1">固定价（元）</input>
                                             </div>
                                             <div class="form-group"align="left" style="float:left">
                                                 <label for="recipient-name" style="width: 30px" class="control-label">  </label>
                                             </div>
 
-                                                <div class="form-group" align="left"  style="float:right">
-                                            <input type="text"  onkeyup= "if( isNaN(this.value) || (this.value.indexOf('.') != -1  &&  this.value.length - this.value.indexOf('.')>3) ){alert('只能输入数字并且小数点后只能保留两位');this.value='';}"  class="form-control" style="width: 150px" name="FixedPrice" id="FixedPrice" maxlength="10" placeholder="请输入固定价格"/>
+                                            <div class="form-group" align="left"  style="float:right">
+                                                <input type="text"  onkeyup= "if( isNaN(this.value) || (this.value.indexOf('.') != -1  &&  this.value.length - this.value.indexOf('.')>3) ){alert('只能输入数字并且小数点后只能保留两位');this.value='';}"  class="form-control" style="width: 150px" name="FixedPrice" id="FixedPrice" maxlength="10" placeholder="请输入固定价格"/>
+                                            </div>
                                         </div>
                                     </div>
-                                        </div>
 
                                     <div class="form-group">
                                         <label for="recipient-name" class="control-label">  </label>
@@ -413,7 +428,7 @@
                                     <div class="form-group" align="left"  style="float:left">
 
                                         <input type="file" name="file" id="ck_attach_path" style="width:98%;"/>
-
+                                        <label for="recipient-name" class="control-label"> 目前仅支持MP4格式视频,上传中会有卡顿,请勿关闭界面 </label>
                                     </div>
                                 </form>
                             </div>
@@ -429,7 +444,7 @@
                                 <button type="button" onclick="addVideo();" class="btn btn-primary">保存</button>
                                 <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
 
-                        </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -528,14 +543,19 @@
                                 <h4 class="modal-title" id="generateLabel">视频短链接信息</h4>
                             </div>
                             <div class="modal-body">
-                                <div class="form-group">
+
+
+                                <div class="form-group"align="left" style="float:left">
+                                    <label for="recipient-name" style="width: 30px" class="control-label" id = "generateShow">  </label>
+                                </div>
+
 
                             </div>
                         </div>
 
 
-                        </div>
                     </div>
+                </div>
                 </div>
             <#--/添加弹框-->
             </@shiro.hasPermission>
