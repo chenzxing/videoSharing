@@ -30,6 +30,14 @@
 							<td>${token.email?default('未设置')}</td>
 						</tr>
                         <tr>
+                            <th>姓名</th>
+                            <td>${token.fullName?default('未设置')}</td>
+                        </tr>
+                        <tr>
+                            <th>身份证号码</th>
+                            <td>${token.idNumber?default('未设置')}</td>
+                        </tr>
+                        <tr>
                             <th>性别</th>
 							<td>
 								<#if token.sex==1>

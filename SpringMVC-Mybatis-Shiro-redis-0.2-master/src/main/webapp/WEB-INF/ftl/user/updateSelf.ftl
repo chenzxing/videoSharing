@@ -34,6 +34,14 @@
 							<input type="text" class="form-control" autocomplete="off" id="nickname" maxlength="8" name="nickname" value="${token.nickname!}" placeholder="请输入昵称">
 						</div>
                         <div class="form-group">
+                            <label for="email">姓名</label>
+                            <input type="text" class="form-control " disabled autocomplete="off" id="fullName" maxlength="30" name="email" value="${token.fullName?default('未设置')}" placeholder="请输入姓名">
+                        </div>
+                        <div class="form-group">
+                            <label for="email">身份证号码</label>
+                            <input type="text" class="form-control " disabled autocomplete="off" id="idNumber" maxlength="30" name="email" value="${token.idNumber?default('未设置')}" placeholder="请输入身份证号码">
+                        </div>
+                        <div class="form-group">
                             <label for="nickname">性别</label>
                             <input type="radio" id="sex_1" name="sex" value="1" <#if token.sex==1>checked </#if> >男
                             <input type="radio" id="sex_2" name="sex" value="2" <#if token.sex==2>checked </#if> >女

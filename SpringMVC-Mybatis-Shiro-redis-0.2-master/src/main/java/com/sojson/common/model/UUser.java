@@ -65,6 +65,16 @@ public class UUser implements Serializable{
      */
     private String roleId;
 
+    /**
+     * 姓名
+     */
+    private String fullName;
+
+    /**
+     * 身份证号码
+     */
+    private String idNumber;
+
     public UUser() {}
     public UUser(UUser user) {
 		this.id = user.getId();
@@ -162,5 +172,21 @@ public class UUser implements Serializable{
 
     public void setRoleId(String roleId) {
         this.roleId = roleId;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public String getIdNumber() {
+        return idNumber;
+    }
+
+    public void setIdNumber(String idNumber) {
+        this.idNumber = idNumber;
     }
 }
