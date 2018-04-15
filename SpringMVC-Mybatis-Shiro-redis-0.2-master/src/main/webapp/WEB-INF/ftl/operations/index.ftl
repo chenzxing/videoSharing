@@ -157,43 +157,57 @@
         <@shiro.hasPermission name="/operations/addVideo.shtml">
         <#--添加视频-->
             function addVideo() {
+                var load = layer.load();
+
                 var VideoName = $('#VideoName').val(),
                         MinPrice = $('#MinPrice').val(),
                         FixedPrice = $('#FixedPrice').val(),
                         IsFixedPrice = $("input[name='IsFixedPrice']:checked").val(),
                         MaxPrice = $('#MaxPrice').val(),
-                        f = $('#ck_attach_path').val();
+                        f = $('#ck_attach_path')[0].files[0];
 
                 if ($.trim(f) == '') {
+                    layer.close(load);
                     return layer.msg('请选择上传视频。', so.default), !1;
                 }
 
 
                 if ($.trim(VideoName) == '') {
+                    layer.close(load);
                     return layer.msg('视频名称不能为空。', so.default), !1;
                 }
                 if ($.trim(IsFixedPrice) == '') {
+                    layer.close(load);
                     return layer.msg('请选择是否固定价。', so.default), !1;
                 }
                 if ($.trim(IsFixedPrice) == '1') {
 
                     if ($.trim(FixedPrice) == '') {
+                        layer.close(load);
                         return layer.msg('固定价格不能为空。', so.default), !1;
                     }
                 }
                 else {
                     if ($.trim(MaxPrice) == '') {
+                        layer.close(load);
                         return layer.msg('最高价格不能为空。', so.default), !1;
                     }
                     if ($.trim(MinPrice) == '') {
+                        layer.close(load);
                         return layer.msg('最低价格不能为空。', so.default), !1;
                     }
                     if (parseFloat(MaxPrice) <=  parseFloat(MinPrice)) {
+                        layer.close(load);
                         return layer.msg('最高价格必须高于最低价格。', so.default), !1;
                     }
                 }
+                var exeName =f.name.substring(f.name.lastIndexOf("."));
+                if(!exeName.match(/.ogg|.mp4|.webm/i))
+                {
+                    layer.close(load);
+                    return layer.msg('视频格式不能为'+exeName +',暂时只支持.ogg|.mp4|.webm这三种格式。', so.default), !1;
 
-                var load = layer.load();
+                }
 
                 var fileresult = file();//开始上传视频
 
@@ -231,6 +245,9 @@
 
             var formData = new FormData();
             formData.append("file", $("#ck_attach_path")[0].files[0]);
+
+
+
             $.ajax({
                 url: '${basePath}/operations/uploadVideo.shtml',
                 type: 'post',
@@ -273,7 +290,7 @@
                         var html="";
                     for(var i=0;i<dataList.length;i++){
 
-                        html +="<div class='form-group'  ><label for='recipient-name' class='control-label' style='WORD-WRAP: break-word; max-width: 400px'> "+dataList[i].videoName+" </label> <div id=\'qrcode"+i+"\'></><div class='form-group'style='height: 20px'></div>";
+                        html +="<div class='form-group'  ><label for='recipient-name' class='control-label' style='WORD-WRAP: break-word; max-width: 400px'> “"+dataList[i].videoName+"”     （请复制以下链接在浏览器打开："+dataList[i].skb+"  或扫码进行观看） </label> <div id=\'qrcode"+i+"\'></div><div class='form-group'style='height: 20px'></div>";
                         }
 
 
@@ -458,8 +475,8 @@
 
                                     <div class="form-group" align="left"  style="float:left">
 
-                                        <input type="file" name="file" id="ck_attach_path" style="width:98%;"/>
-                                        <label for="recipient-name" class="control-label"> 目前仅支持MP4格式视频,上传中会有卡顿,请勿关闭界面 </label>
+                                        <input type="file" name="file" id="ck_attach_path" style="width:98%;" accept="video/ogg,video/mp4,video/webm"></input>
+                                        <label for="recipient-name" class="control-label"> 目前仅支持MP4,ogg,webm格式视频,上传中会有卡顿,请勿关闭界面 </label>
                                     </div>
                                 </form>
                             </div>

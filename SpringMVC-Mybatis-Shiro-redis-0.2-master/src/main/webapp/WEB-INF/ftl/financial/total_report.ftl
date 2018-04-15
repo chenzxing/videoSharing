@@ -57,7 +57,7 @@
                     <form method="post" action="" id="formId" class="form-inline">
                         <div clss="well">
                             <div class="form-group">
-                                用&nbsp;户&nbsp;名：
+                                上&nbsp;传&nbsp;人：
                                 <input type="text" class="form-control" style="width: 180px;" value="${userName?default('')}"
                                        name="userName" id="userName" placeholder="输入用户名称">
                                 &nbsp;&nbsp;
@@ -87,7 +87,7 @@
                                 <th>总播放次数</th>
                                 <th>总收入</th>
                                 <th>上传人</th>
-                                <th>生成时间</th>
+                                <th>上传时间</th>
                             </tr>
                             <#if page?exists && page.list?size gt 0 >
                                 <#list page.list as it>

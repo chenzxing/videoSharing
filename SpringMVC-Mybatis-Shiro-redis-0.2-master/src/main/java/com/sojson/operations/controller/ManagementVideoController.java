@@ -252,20 +252,20 @@ public class ManagementVideoController  extends BaseController {
         try {
             String url= "";
             //String url= "/Video/";
-            String guid = java.util.UUID.randomUUID().toString();
+            String guid = UUID.randomUUID().toString();
             boolean result =false;
             //获取文件名
             String fileName = file.getOriginalFilename();
             //文件扩展名
             String extName = fileName.substring(fileName.lastIndexOf("."));
 
-            if(!extName.toLowerCase().equals(".mp4"))
-            {
+           // if(!extName.toLowerCase().equals(".mp4"))
+           // {
 
-                resultMap.put("status", 500);
-                resultMap.put("message", "添加失败，暂时只支持MP4格式！");
-                return resultMap;
-            }
+              //  resultMap.put("status", 500);
+              //  resultMap.put("message", "添加失败，暂时只支持MP4格式！");
+             //   return resultMap;
+            //}
 
             long currentTime=System.currentTimeMillis() ;
 

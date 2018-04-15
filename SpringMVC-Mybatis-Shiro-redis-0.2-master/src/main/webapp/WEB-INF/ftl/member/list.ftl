@@ -78,6 +78,14 @@
 			</@shiro.hasPermission>
 
 			<@shiro.hasPermission name="/member/addUser.shtml">
+			function add_onclick(){
+				$("#email").val("");
+                $("#nickname").val("");
+                $("#pswd").val("");
+                $("#phone").val("");
+                $('#adduser').modal();
+			}
+
 			<#--添加用户-->
             function addUser(){
                 var nickname = $('#nickname').val(),
@@ -281,7 +289,7 @@
 					     <span class=""> <#--pull-right -->
 				         	<button type="submit" class="btn btn-primary">查询</button>
 							 <@shiro.hasPermission name="/member/addUser.shtml">
-								 <a class="btn btn-success" onclick="$('#adduser').modal();">增加用户</a>
+								 <a class="btn btn-success" onclick="add_onclick()">增加用户</a>
 							 </@shiro.hasPermission>
 				         	<@shiro.hasPermission name="/member/deleteUserById.shtml">
 				         		<button type="button" id="deleteAll" class="btn  btn-danger">删除用户</button>
