@@ -238,8 +238,10 @@
                         var add_html ="";
                         var edit_html ="";
                         $.each(result,function(){
-                            add_html=add_html+"<label><input type='checkbox' id='role_"+this.id+"' name='add_role' value='"+this.id+"'>"+this.name+"</label>";
-                            edit_html=edit_html+"<label><input type='checkbox' id='edit_role_"+this.id+"' name='edit_role' value='"+this.id+"'>"+this.name+"</label>";
+                            //新增用户的角色
+                            add_html=add_html+"<label><input type='checkbox' id='role_"+this.id+"' name='add_role' value='"+this.id+"'>"+this.name+"</label>&nbsp;&nbsp;";
+                            //修改用户的角色
+                            edit_html=edit_html+"<label><input type='checkbox' id='edit_role_"+this.id+"' name='edit_role' value='"+this.id+"'>"+this.name+"</label>&nbsp;&nbsp;";
                         });
                         $("#role_btn").html(add_html);
                         $("#edit_role_btn").html(edit_html);
@@ -314,7 +316,9 @@
 										</a>
 										</@shiro.hasPermission>
 										<@shiro.hasPermission name="/member/editUser.shtml">
-                                            <a  onclick="editBtn(${it.id})">修改</a>
+											<#if it.status==1>
+                                            	<a  onclick="editBtn(${it.id})">修改</a>
+											</#if>
 										</@shiro.hasPermission>
 										<@shiro.hasPermission name="/member/deleteUserById.shtml">
 										<a href="javascript:_delete([${it.id}]);">删除</a>

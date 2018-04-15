@@ -7,8 +7,13 @@ import javax.annotation.Resource;
 
 import net.sf.json.JSONObject;
 
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.PrincipalCollection;
+import org.apache.shiro.subject.SimplePrincipalCollection;
+import org.apache.shiro.subject.Subject;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -55,8 +60,12 @@ public class UserCoreController extends BaseController {
 	 */
 	@RequestMapping(value="index",method=RequestMethod.GET)
 	public ModelAndView userIndex(){
-		
-		return new ModelAndView("user/index");
+		//获取当前登录用户的id
+		Long userId=TokenManager.getUserId();
+		UUser user =userService.selectByPrimaryKey(userId);
+		ModelMap map=new ModelMap();
+		map.put("user",user);
+		return new ModelAndView("user/index",map);
 	}
 	
 	
@@ -109,9 +118,23 @@ public class UserCoreController extends BaseController {
 	 */
 	@RequestMapping(value="updateSelf",method=RequestMethod.POST)
 	@ResponseBody
-	public Map<String,Object> updateSelf(UUser entity){
+	public Map<String,Object> updateSelf(UUser entity,Boolean rememberMe){
 		try {
 			userService.updateByPrimaryKeySelective(entity);
+
+			//修改完成后，更新用户信息的缓存
+			Subject subject = SecurityUtils.getSubject();
+			UUser shiroUser = (UUser)subject.getPrincipal();
+			PrincipalCollection principalCollection = subject.getPrincipals();
+			//修改属性
+			shiroUser.setNickname(entity.getNickname());
+			shiroUser.setSex(entity.getSex());
+			shiroUser.setPhone(entity.getPhone());
+			String realmName = principalCollection.getRealmNames().iterator().next();
+			PrincipalCollection newPrincipalCollection = new SimplePrincipalCollection(shiroUser, realmName);
+			//重新加载Principal
+			subject.runAs(newPrincipalCollection);
+
 			resultMap.put("status", 200);
 			resultMap.put("message", "修改成功!");
 		} catch (Exception e) {

@@ -86,7 +86,7 @@
                                 <th>结束时间</th>
                                 <th>总播放次数</th>
                                 <th>总收入</th>
-                                <th>长传人</th>
+                                <th>上传人</th>
                                 <th>生成时间</th>
                             </tr>
                             <#if page?exists && page.list?size gt 0 >

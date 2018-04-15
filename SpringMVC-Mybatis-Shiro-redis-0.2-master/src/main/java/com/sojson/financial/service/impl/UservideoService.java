@@ -51,8 +51,7 @@ public class UservideoService extends BaseMybatisDao<UservideoMapper> implements
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public Pagination<Uservideo> findPage(Map<String, Object> resultMap,
-									  Integer pageNo, Integer pageSize) {
+	public Pagination<Uservideo> findPage(Map<String, Object> resultMap,Integer pageNo, Integer pageSize) {
 		return super.findPage(resultMap, pageNo, pageSize);
 	}
 

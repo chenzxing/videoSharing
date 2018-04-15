@@ -37,6 +37,7 @@ public class UservideoController extends BaseController {
         map.put("videoName", videoName);
         map.put("startDate", startDate);
         map.put("endDate", endDate);
+
         Pagination<Uservideo> page = uservideoService.findPage(map,pageNo,pageSize);
         map.put("page", page);
         return new ModelAndView("financial/total_report",map);
