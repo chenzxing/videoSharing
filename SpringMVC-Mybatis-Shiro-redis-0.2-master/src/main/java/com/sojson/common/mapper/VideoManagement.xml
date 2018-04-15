@@ -82,7 +82,19 @@
   </select>
 
 
-  <select id="selectByPrimaryKey" resultType="com.sojson.common.model.Video">
+  <!-- 视频的分页查询 -->
+  <select id="findPageByID" resultMap="BaseResultMap">
+    select * from
+    videoinfo
+    <where>
+      ID =   #{ids,jdbcType=VARCHAR}
+    </where>
+    order by UploadDate desc
+  </select>
+
+
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap">
     select * from
     videoinfo
      where ID = #{ID,jdbcType=BIGINT}

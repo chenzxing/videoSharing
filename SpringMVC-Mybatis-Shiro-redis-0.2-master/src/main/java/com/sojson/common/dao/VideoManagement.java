@@ -2,6 +2,7 @@ package com.sojson.common.dao;
 
 
 import com.sojson.common.model.Video;
+import com.sojson.core.mybatis.page.Pagination;
 import com.sojson.permission.bo.URoleBo;
 
 import java.util.List;
@@ -21,4 +22,6 @@ public interface VideoManagement {
     Video selectByPrimaryKey(Long id);
 
     int insert(Video video);
+
+   Video  findPageByID(String id);
 }

@@ -12,6 +12,8 @@
     <script  src="${basePath}/js/common/layer/layer.js"></script>
     <script  src="${basePath}/js/common/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     <script  src="${basePath}/js/shiro.demo.js"></script>
+    <script  src="${basePath}/js/common/jquery/jquery.qrcode.js"></script>
+    <script  src="${basePath}/js/common/jquery/qrcode.js"></script>
     <script >
         so.init(function(){
             //初始化全选。
@@ -128,7 +130,7 @@
                     if($.trim(MinPrice) == ''){
                         return layer.msg('最低价格不能为空。',so.default),!1;
                     }
-                    if(parseFloat(MaxPrice)  < parseFloat(MinPrice)){
+                    if(parseFloat(MaxPrice)  <= parseFloat(MinPrice)){
                         return layer.msg('最高价格必须高于最低价格。',so.default),!1;
                     }
                 }
@@ -186,7 +188,7 @@
                     if ($.trim(MinPrice) == '') {
                         return layer.msg('最低价格不能为空。', so.default), !1;
                     }
-                    if (parseFloat(MaxPrice) < parseFloat(MinPrice)) {
+                    if (parseFloat(MaxPrice) <=  parseFloat(MinPrice)) {
                         return layer.msg('最高价格必须高于最低价格。', so.default), !1;
                     }
                 }
@@ -252,31 +254,60 @@
 
 
         <@shiro.hasPermission name="/operations/generate.shtml">
-			//根据ID数组，获取
+			//根据ID数组，获取视频信息
 			function generateBtn(ids){
 
-                var load = layer.load();
-                $.post('${basePath}/operations/generate.shtml',{ids:ids.join(',')},function(result){
-                    layer.close(load);
-                    if(result && result.status != 200){
-                        return layer.msg(result.message,so.default),!0;
-                    }else{
+                //var load = layer.load();
+                $.post('${basePath}/operations/generate.shtml',{ids:ids.join(',')},
+                function(data){
+                  //  layer.close(load);
+                    if(data.resultCode=="0000"){
+                        $("#generateShow").html("");
 
-                        setTimeout(function(){
+                     var dataList =  data.data;
+                     if(dataList.length<=0)
+                     {
+                         layer.msg('查找数据失败，生成二维码失败。');
+                     }
 
-                        },1000);
+                        var html="";
+                    for(var i=0;i<dataList.length;i++){
+
+                        html +="<div class='form-group'  ><label for='recipient-name' class='control-label' style='WORD-WRAP: break-word; max-width: 400px'> "+dataList[i].videoName+" </label> <div id=\'qrcode"+i+"\'></><div class='form-group'style='height: 20px'></div>";
+                        }
+
+
+                        $("#generateShow").html(html);
+
+                        for(var i=0;i<dataList.length;i++) {
+                            $('#qrcode'+i).qrcode({
+                                render: "canvas", //table方式
+                                width: 150, //宽度
+                                height:150, //高度
+                                text: dataList[i].skb //任意内容
+                            });
+                        }
+
+                        $('#generate').modal();
+
+
+
+                    }
+                    else{
+                        layer.msg('生成二维码失败。');
                     }
                 },'json');
 
 
-                
+
             }
         </@shiro.hasPermission>
 
 
+
     </script>
 </head>
-<body data-target="#one" data-spy="scroll">
+<body data-target="#one" data-spy="scroll" >
 
 		<@_top.top 4/>
 <div class="container" style="padding-bottom: 15px;min-height: 300px; margin-top: 40px;">
@@ -325,7 +356,7 @@
                                     <td><input value="${it.id}" check='box' type="checkbox" /></td>
                                     <td>${it_index + 1 }</td>
                                     <td>${it.userName?default('')}</td>
-                                    <td>${it.videoName?default('未设置')}</td>
+                                    <td style="  overflow: hidden;  text-overflow: ellipsis; white-space: nowrap; max-width: 200px">${it.videoName?default('未设置')}</td>
                                     <td>${(it.isFixedPrice==1)?string(it.fixedPrice?default('未设置'),it.minPrice?default('0') +'~'+ it.maxPrice?default('0') )}</td>
                                     <td>${it.SKB?default('未设置')}</td>
                                     <td>${it.uploadDate}</td>
@@ -385,7 +416,7 @@
                                             <label for="recipient-name" style="width: 30px" class="control-label">  </label>
                                         </div>
                                         <div class="form-group"align="left" style="float:left">
-                                            <input type="text" class="form-control" name="MinPrice" id="MinPrice" maxlength="10" placeholder="请输入最低价格" onkeyup= "if( isNaN(this.value) || (this.value.indexOf('.') != -1  &&  this.value.length - this.value.indexOf('.')>3) ){alert('只能输入数字并且小数点后只能保留两位');this.value='';}"/>
+                                            <input type="text" class="form-control" name="MinPrice" id="MinPrice" maxlength="10" placeholder="请输入最低价格"  onkeyup= "if( isNaN(this.value) || (this.value.indexOf('.') != -1  &&  this.value.length - this.value.indexOf('.')>3) ){alert('只能输入数字并且小数点后只能保留两位');this.value='';}"/>
 
                                         </div>
                                         <div class="form-group"align="left" style="float:left">
@@ -453,7 +484,7 @@
 
     <!-- 修改用户弹窗-->
 			<@shiro.hasPermission name="/operations/editVideo.shtml">
-            <#--添加弹框-->
+            <#--修改用户弹框-->
 				<div class="modal fade" id="editVideo" tabindex="-1" role="dialog" aria-labelledby="editVideoLabel">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
@@ -529,34 +560,47 @@
                         </div>
                     </div>
                 </div>
-            <#--/添加弹框-->
+            <#--/修改用户-->
             </@shiro.hasPermission>
 
-    <!-- 修改用户弹窗-->
+    <!-- 短链接弹窗-->
 			<@shiro.hasPermission name="/operations/generate.shtml">
-            <#--添加弹框-->
-				<div class="modal fade" id="generate" tabindex="-1" role="dialog" aria-labelledby="generateLabel">
+            <#--短链接弹框-->
+				<div class="modal fade" id="generate" tabindex="-1" role="dialog" aria-labelledby="generateLabel"  >
                     <div class="modal-dialog" role="document">
-                        <div class="modal-content">
+                        <div class="modal-content" >
                             <div class="modal-header">
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                 <h4 class="modal-title" id="generateLabel">视频短链接信息</h4>
                             </div>
-                            <div class="modal-body">
+
+                            <div class="modal-body"  ">
+                                <form id="boxRoleForm">
+
+                                    <label for="recipient-name"   class="control-label" id = "generateShow">  </label>
 
 
-                                <div class="form-group"align="left" style="float:left">
-                                    <label for="recipient-name" style="width: 30px" class="control-label" id = "generateShow">  </label>
-                                </div>
-
-
+                                </form>
                             </div>
+
+
+                            <div class="form-group" >
+                                <label for="recipient-name" class="control-label">  </label>
+                            </div>
+                            <div class="form-group">
+                                <label for="recipient-name" class="control-label">  </label>
+                            </div>
+
+
+
                         </div>
 
+                        <div class="modal-footer">
 
+                        </div>
                     </div>
                 </div>
-                </div>
+
             <#--/添加弹框-->
             </@shiro.hasPermission>
 

@@ -24,5 +24,5 @@ public interface VideoService {
 
 	int insert(Video video);
 
-
+	List<Video> findPageByID(String ids);
 }

@@ -11,8 +11,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class VideoServiceimpl extends BaseMybatisDao<VideoManagement> implements VideoService{
@@ -72,4 +71,29 @@ public class VideoServiceimpl extends BaseMybatisDao<VideoManagement> implements
 
     }
 
+    @Override
+    public List<Video> findPageByID(String ids) {
+
+        List<Video> videoList = new ArrayList<Video>();
+        try {
+
+            String count="";
+            String[] idArray = new String[]{};
+            if(StringUtils.contains(ids, ",")){
+                idArray = ids.split(",");
+            }else{
+                idArray = new String[]{ids};
+            }
+
+            for (String id : idArray) {
+                videoList.add(videoManagement.findPageByID( id)) ;
+            }
+
+
+        } catch (Exception e) {
+
+        }
+
+        return videoList;
+    }
 }

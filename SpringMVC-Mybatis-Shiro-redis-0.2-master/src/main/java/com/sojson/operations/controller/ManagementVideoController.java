@@ -2,7 +2,7 @@ package com.sojson.operations.controller;
 
 import com.sojson.common.controller.BaseController;
 
-import com.sojson.common.model.UUser;
+
 import com.sojson.common.utils.AjaxData;
 import com.sojson.common.utils.LoggerUtils;
 import com.sojson.core.config.IConfig;
@@ -37,7 +37,8 @@ import java.math.BigDecimal;
 import java.util.*;
 import java.text.SimpleDateFormat;
 
-
+import java.util.List;
+import java.util.Map;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
 import com.google.zxing.MultiFormatWriter;
@@ -93,7 +94,7 @@ public class ManagementVideoController  extends BaseController {
      *  @param input 上传的文件流
      * @throws Exception
      */
-    private boolean upload(String fileName,FileInputStream input) throws Exception{
+    private boolean upload(String fileName,InputStream input) throws Exception{
 
         boolean result =  ftp.storeFile(fileName, input);
         input.close();
@@ -111,6 +112,7 @@ public class ManagementVideoController  extends BaseController {
         Long userId = TokenManager.getToken().getId();
         modelMap.put("userid", userId);
         Pagination<Video> videos = videoService.findPage(modelMap,pageNo,pageSize);
+
 
         for (Video video:
                 videos.getList()) {
@@ -197,16 +199,7 @@ public class ManagementVideoController  extends BaseController {
         return ajaxData;
     }
 
-    /**
-     * 视频信息
-     * @param id
-     * @return
-     */
-    @RequestMapping(value="seleep",method=RequestMethod.POST)
-    @ResponseBody
-    public void seleep(){
 
-    }
 
 
     /**
@@ -286,9 +279,9 @@ public class ManagementVideoController  extends BaseController {
                 connect(IConfig.get("domain.url"), IConfig.get("domain.ftpip"), 21, IConfig.get("domain.ftpuser"), IConfig.get("domain.ftppwd"));
 
                 InputStream inputStream = file.getInputStream();
-                FileInputStream input = (FileInputStream) (inputStream);
+               // FileInputStream input = (FileInputStream) (inputStream);
 
-                result =   upload(currentTime+guid.substring(0,4)+extName,input);
+                result =   upload(currentTime+guid.substring(0,4)+extName,inputStream);
 
             }
 
@@ -315,5 +308,36 @@ public class ManagementVideoController  extends BaseController {
         return resultMap;
     }
 
+    @RequestMapping(value="generate",method=RequestMethod.POST)
+    @ResponseBody
+    public AjaxData generate(String ids){
 
+       // List<Video> videos = videoService.findPageByID(ids);
+        AjaxData ajaxData=new AjaxData();
+        try {
+
+            List<Video> videos = videoService.findPageByID(ids);
+            if(videos ==null || videos.size()<=0)
+            {
+                ajaxData.setResultCode("0001");
+                ajaxData.setResultMessage("查找失败，请刷新后再试");
+                return ajaxData;
+            }
+
+            for (Video video:
+                    videos) {
+                video.setSKB(IConfig.get("domain.videoarea") + "?movie_id=" +  video.getId());
+            }
+
+            Map<String,Object> map=new HashMap<String, Object>();
+            map.put("VideoList",videos);
+            ajaxData.setResultCode("0000");
+            ajaxData.setResultMessage("查找成功");
+            ajaxData.setData(videos);
+        } catch (Exception e) {
+            ajaxData.setResultCode("0001");
+            ajaxData.setResultMessage("查找数据转换失败，请刷新后再试");
+        }
+        return ajaxData;
+    }
 }
