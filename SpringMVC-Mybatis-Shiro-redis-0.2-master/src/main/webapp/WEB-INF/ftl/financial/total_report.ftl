@@ -93,14 +93,14 @@
                                 <#list page.list as it>
                                     <tr>
                                         <td>${it_index+1}</td>
-                                        <td>${it.weixinNikename?default('未设置')}</td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
+                                        <td style="  overflow: hidden;  text-overflow: ellipsis; white-space: nowrap; max-width: 200px">${it.videoname?default('未设置')}</td>
+                                        <td>${it.skb?default('未设置')}</td>
+                                        <td>${it.starttime?default('未设置')}</td>
+                                        <td>${it.endtime?default('未设置')}</td>
+                                        <td>${it.videocount?default('未设置')}</td>
+                                        <td>${it.price?default('未设置')}</td>
+                                        <td>${it.nickname?default('未设置')}</td>
+                                        <td>${it.uploaddate?default('未设置')}</td>
                                     </tr>
                                 </#list>
                             </#if>

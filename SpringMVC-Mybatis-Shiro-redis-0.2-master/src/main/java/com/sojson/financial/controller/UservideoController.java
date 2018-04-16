@@ -1,6 +1,7 @@
 package com.sojson.financial.controller;
 
 import com.sojson.common.controller.BaseController;
+import com.sojson.common.model.ReportVideo;
 import com.sojson.common.model.URole;
 import com.sojson.common.model.UUser;
 import com.sojson.common.model.Uservideo;
@@ -14,6 +15,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import static com.sojson.common.controller.BaseController.pageSize;
@@ -32,14 +34,38 @@ public class UservideoController extends BaseController {
      */
     @RequestMapping(value="index")
     public ModelAndView index(ModelMap map, Integer pageNo, String userName, String videoName, String startDate, String endDate){
+        Date d = new Date();
+        SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd");
 
         map.put("userName", userName);
         map.put("videoName", videoName);
-        map.put("startDate", startDate);
-        map.put("endDate", endDate);
+        if( startDate == null || startDate.length() == 0)
+        {
 
-        Pagination<Uservideo> page = uservideoService.findPage(map,pageNo,pageSize);
+            map.put("startDate", date.format(d));
+        }
+        else {
+            map.put("startDate", startDate);
+
+        }
+        if( startDate == null || startDate.length() == 0)
+        {
+            map.put("endDate",  date.format(d));
+        }
+        else {
+            map.put("endDate", endDate);
+        }
+
+
+        Pagination<ReportVideo> page = uservideoService.findPage(map,pageNo,pageSize);
+
+        for (ReportVideo reportVideo:
+                page.getList()) {
+            reportVideo.setSkb(IConfig.get("domain.videoarea") + "?movie_id=" +  reportVideo.getPromulgatorid());
+        }
+
         map.put("page", page);
+
         return new ModelAndView("financial/total_report",map);
     }
 
@@ -49,11 +75,33 @@ public class UservideoController extends BaseController {
      */
     @RequestMapping(value="index_everyday")
     public ModelAndView index_everyday(ModelMap map,Integer pageNo,String userName, String videoName, String startDate, String endDate){
+        Date d = new Date();
+        SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd");
         map.put("userName", userName);
         map.put("videoName", videoName);
-        map.put("startDate", startDate);
-        map.put("endDate", endDate);
-        Pagination<Uservideo> page = uservideoService.findPageEveryday(map,pageNo,pageSize);
+        if( startDate == null || startDate.length() == 0)
+        {
+
+            map.put("startDate",  date.format(d));
+        }
+        else {
+            map.put("startDate", startDate);
+
+        }
+        if( startDate == null || startDate.length() == 0)
+        {
+            map.put("endDate",  date.format(d));
+        }
+        else {
+            map.put("endDate", endDate);
+        }
+
+        Pagination<ReportVideo> page = uservideoService.findPageEveryday(map,pageNo,pageSize);
+        for (ReportVideo reportVideo:
+                page.getList()) {
+            reportVideo.setSkb(IConfig.get("domain.videoarea") + "?movie_id=" +  reportVideo.getPromulgatorid());
+        }
+
         map.put("page", page);
         return new ModelAndView("financial/everyday_report");
     }

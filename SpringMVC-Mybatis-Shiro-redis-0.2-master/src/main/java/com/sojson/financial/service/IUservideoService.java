@@ -1,5 +1,6 @@
 package com.sojson.financial.service;
 
+import com.sojson.common.model.ReportVideo;
 import com.sojson.common.model.URole;
 import com.sojson.common.model.Uservideo;
 import com.sojson.core.mybatis.page.Pagination;
@@ -22,7 +23,7 @@ public interface IUservideoService{
 
 	public int updateByPrimaryKeySelective(Uservideo uservideo);
 
-	Pagination<Uservideo> findPage(Map<String, Object> resultMap, Integer pageNo,Integer pageSize);
+	Pagination<ReportVideo> findPage(Map<String, Object> resultMap, Integer pageNo, Integer pageSize);
 
-	Pagination<Uservideo> findPageEveryday(Map<String, Object> resultMap, Integer pageNo,Integer pageSize);
+	Pagination<ReportVideo> findPageEveryday(Map<String, Object> resultMap, Integer pageNo,Integer pageSize);
 }

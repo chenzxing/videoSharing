@@ -19,8 +19,30 @@
 		<result property="by3" column="By3" jdbcType="VARCHAR" />
 		<result property="by4" column="By4" jdbcType="VARCHAR" />
 		<result property="by5" column="By5" jdbcType="VARCHAR" />
+
+
+
 	</resultMap>
-	
+
+
+
+
+	<resultMap id="ReportVideoResultMap" type="com.sojson.common.model.ReportVideo">
+		<id property="promulgatorid" column="promulgatorid"  jdbcType="INTEGER"/>
+		<result property="endtime" column="endtime" jdbcType="VARCHAR" />
+		<result property="starttime" column="starttime" jdbcType="VARCHAR" />
+		<result property="videocount" column="videocount" jdbcType="VARCHAR" />
+		<result property="price" column="price" jdbcType="VARCHAR" />
+		<result property="skb" column="skb" jdbcType="VARCHAR" />
+		<result property="playtime" column="playtime" jdbcType="VARCHAR" />
+		<result property="uploaddate" column="uploaddate" jdbcType="VARCHAR" />
+		<result property="videoname" column="videoname" jdbcType="VARCHAR" />
+		<result property="nickname" column="nickname" jdbcType="VARCHAR" />
+
+
+	</resultMap>
+
+
 	<sql id="Base_Column_List">
 	    <![CDATA[
 		ID,weixin_nikename,VideoID,UserID,Payments,OnePaymentTime,OnePaymentPrice,SecondPaymentTime,SecondPaymentPrice,By1,By2,By3,By4,By5
@@ -29,46 +51,46 @@
 
 	<sql id="Uservideo_findPage">
 		<where>
-	       <if test="id != null">
+			<if test="id != null">
 				AND ID = #{id,jdbcType=INTEGER}
 			</if>
-	       <if test="weixinNikename != null">
+			<if test="weixinNikename != null">
 				AND weixin_nikename = #{weixinNikename,jdbcType=VARCHAR}
 			</if>
-	       <if test="videoId != null">
+			<if test="videoId != null">
 				AND VideoID = #{videoId,jdbcType=INTEGER}
 			</if>
-	       <if test="userId != null">
+			<if test="userId != null">
 				AND UserID = #{userId,jdbcType=INTEGER}
 			</if>
-	       <if test="payments != null">
+			<if test="payments != null">
 				AND Payments = #{payments,jdbcType=INTEGER}
 			</if>
-	       <if test="onePaymentTime != null">
+			<if test="onePaymentTime != null">
 				AND OnePaymentTime = #{onePaymentTime,jdbcType=VARCHAR}
 			</if>
-	       <if test="onePaymentPrice != null">
+			<if test="onePaymentPrice != null">
 				AND OnePaymentPrice = #{onePaymentPrice,jdbcType=DECIMAL}
 			</if>
-	       <if test="secondPaymentTime != null">
+			<if test="secondPaymentTime != null">
 				AND SecondPaymentTime = #{secondPaymentTime,jdbcType=VARCHAR}
 			</if>
-	       <if test="secondPaymentPrice != null">
+			<if test="secondPaymentPrice != null">
 				AND SecondPaymentPrice = #{secondPaymentPrice,jdbcType=DECIMAL}
 			</if>
-	       <if test="by1 != null">
+			<if test="by1 != null">
 				AND By1 = #{by1,jdbcType=VARCHAR}
 			</if>
-	       <if test="by2 != null">
+			<if test="by2 != null">
 				AND By2 = #{by2,jdbcType=VARCHAR}
 			</if>
-	       <if test="by3 != null">
+			<if test="by3 != null">
 				AND By3 = #{by3,jdbcType=VARCHAR}
 			</if>
-	       <if test="by4 != null">
+			<if test="by4 != null">
 				AND By4 = #{by4,jdbcType=VARCHAR}
 			</if>
-	       <if test="by5 != null">
+			<if test="by5 != null">
 				AND By5 = #{by5,jdbcType=VARCHAR}
 			</if>
 		</where>
@@ -110,8 +132,8 @@
     ]]>
 	</insert>
 
-    <insert id="insertSelective" parameterType="com.sojson.common.model.Uservideo">
-        INSERT INTO uservideo 
+	<insert id="insertSelective" parameterType="com.sojson.common.model.Uservideo">
+		INSERT INTO uservideo
 		<trim prefix="(" suffix=")" suffixOverrides="," >
 			<if test="id != null">ID </if>,
 			<if test="weixinNikename != null">weixin_nikename </if>,
@@ -169,120 +191,120 @@
 				By4 = #{by4,jdbcType=VARCHAR}	,
 			</if>
 			<if test="by5 != null">
-				By5 = #{by5,jdbcType=VARCHAR}	
+				By5 = #{by5,jdbcType=VARCHAR}
 			</if>
 		</trim>
 	</insert>
 
 	<insert id="insertBatch" parameterType="com.sojson.common.model.Uservideo" >
-		 INSERT INTO uservideo  (
-        	weixin_nikename ,
-        	VideoID ,
-        	UserID ,
-        	Payments ,
-        	OnePaymentTime ,
-        	OnePaymentPrice ,
-        	SecondPaymentTime ,
-        	SecondPaymentPrice ,
-        	By1 ,
-        	By2 ,
-        	By3 ,
-        	By4 ,
-        	By5 
+		INSERT INTO uservideo  (
+		weixin_nikename ,
+		VideoID ,
+		UserID ,
+		Payments ,
+		OnePaymentTime ,
+		OnePaymentPrice ,
+		SecondPaymentTime ,
+		SecondPaymentPrice ,
+		By1 ,
+		By2 ,
+		By3 ,
+		By4 ,
+		By5
 		) VALUES
 		<foreach collection="list" item="item" index="index" separator=",">(
-        	#{item.weixinNikename,jdbcType=VARCHAR} ,
-        	#{item.videoId,jdbcType=INTEGER} ,
-        	#{item.userId,jdbcType=INTEGER} ,
-        	#{item.payments,jdbcType=INTEGER} ,
-        	#{item.onePaymentTime,jdbcType=VARCHAR} ,
-        	#{item.onePaymentPrice,jdbcType=DECIMAL} ,
-        	#{item.secondPaymentTime,jdbcType=VARCHAR} ,
-        	#{item.secondPaymentPrice,jdbcType=DECIMAL} ,
-        	#{item.by1,jdbcType=VARCHAR} ,
-        	#{item.by2,jdbcType=VARCHAR} ,
-        	#{item.by3,jdbcType=VARCHAR} ,
-        	#{item.by4,jdbcType=VARCHAR} ,
-        	#{item.by5,jdbcType=VARCHAR} 
+			#{item.weixinNikename,jdbcType=VARCHAR} ,
+			#{item.videoId,jdbcType=INTEGER} ,
+			#{item.userId,jdbcType=INTEGER} ,
+			#{item.payments,jdbcType=INTEGER} ,
+			#{item.onePaymentTime,jdbcType=VARCHAR} ,
+			#{item.onePaymentPrice,jdbcType=DECIMAL} ,
+			#{item.secondPaymentTime,jdbcType=VARCHAR} ,
+			#{item.secondPaymentPrice,jdbcType=DECIMAL} ,
+			#{item.by1,jdbcType=VARCHAR} ,
+			#{item.by2,jdbcType=VARCHAR} ,
+			#{item.by3,jdbcType=VARCHAR} ,
+			#{item.by4,jdbcType=VARCHAR} ,
+			#{item.by5,jdbcType=VARCHAR}
 			)
 		</foreach>
 	</insert>
-	
+
 	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
         DELETE FROM uservideo WHERE
         ID =#{id,jdbcType=INTEGER}
     </delete>
-	
+
 	<update id="updateByPrimaryKeySelective" parameterType="com.sojson.common.model.Uservideo" >
-        UPDATE uservideo 
+		UPDATE uservideo
 		<set>
-				<if test="weixinNikename != null">
+			<if test="weixinNikename != null">
 				weixin_nikename = #{weixinNikename,jdbcType=VARCHAR}	,
-				</if>
-				<if test="videoId != null">
+			</if>
+			<if test="videoId != null">
 				VideoID = #{videoId,jdbcType=INTEGER}	,
-				</if>
-				<if test="userId != null">
+			</if>
+			<if test="userId != null">
 				UserID = #{userId,jdbcType=INTEGER}	,
-				</if>
-				<if test="payments != null">
+			</if>
+			<if test="payments != null">
 				Payments = #{payments,jdbcType=INTEGER}	,
-				</if>
-				<if test="onePaymentTime != null">
+			</if>
+			<if test="onePaymentTime != null">
 				OnePaymentTime = #{onePaymentTime,jdbcType=VARCHAR}	,
-				</if>
-				<if test="onePaymentPrice != null">
+			</if>
+			<if test="onePaymentPrice != null">
 				OnePaymentPrice = #{onePaymentPrice,jdbcType=DECIMAL}	,
-				</if>
-				<if test="secondPaymentTime != null">
+			</if>
+			<if test="secondPaymentTime != null">
 				SecondPaymentTime = #{secondPaymentTime,jdbcType=VARCHAR}	,
-				</if>
-				<if test="secondPaymentPrice != null">
+			</if>
+			<if test="secondPaymentPrice != null">
 				SecondPaymentPrice = #{secondPaymentPrice,jdbcType=DECIMAL}	,
-				</if>
-				<if test="by1 != null">
+			</if>
+			<if test="by1 != null">
 				By1 = #{by1,jdbcType=VARCHAR}	,
-				</if>
-				<if test="by2 != null">
+			</if>
+			<if test="by2 != null">
 				By2 = #{by2,jdbcType=VARCHAR}	,
-				</if>
-				<if test="by3 != null">
+			</if>
+			<if test="by3 != null">
 				By3 = #{by3,jdbcType=VARCHAR}	,
-				</if>
-				<if test="by4 != null">
+			</if>
+			<if test="by4 != null">
 				By4 = #{by4,jdbcType=VARCHAR}	,
-				</if>
-				<if test="by5 != null">
-				By5 = #{by5,jdbcType=VARCHAR}	
-				</if>
+			</if>
+			<if test="by5 != null">
+				By5 = #{by5,jdbcType=VARCHAR}
+			</if>
 		</set>
 		WHERE  ID =#{id,jdbcType=INTEGER}
 	</update>
 
-    <update id="updateByPrimaryKey" parameterType="com.sojson.common.model.Uservideo" >
-        UPDATE uservideo 
+	<update id="updateByPrimaryKey" parameterType="com.sojson.common.model.Uservideo" >
+		UPDATE uservideo
 		<set>
-				weixin_nikename = #{weixinNikename,jdbcType=VARCHAR}	,
-				VideoID = #{videoId,jdbcType=INTEGER}	,
-				UserID = #{userId,jdbcType=INTEGER}	,
-				Payments = #{payments,jdbcType=INTEGER}	,
-				OnePaymentTime = #{onePaymentTime,jdbcType=VARCHAR}	,
-				OnePaymentPrice = #{onePaymentPrice,jdbcType=DECIMAL}	,
-				SecondPaymentTime = #{secondPaymentTime,jdbcType=VARCHAR}	,
-				SecondPaymentPrice = #{secondPaymentPrice,jdbcType=DECIMAL}	,
-				By1 = #{by1,jdbcType=VARCHAR}	,
-				By2 = #{by2,jdbcType=VARCHAR}	,
-				By3 = #{by3,jdbcType=VARCHAR}	,
-				By4 = #{by4,jdbcType=VARCHAR}	,
-				By5 = #{by5,jdbcType=VARCHAR}	
+			weixin_nikename = #{weixinNikename,jdbcType=VARCHAR}	,
+			VideoID = #{videoId,jdbcType=INTEGER}	,
+			UserID = #{userId,jdbcType=INTEGER}	,
+			Payments = #{payments,jdbcType=INTEGER}	,
+			OnePaymentTime = #{onePaymentTime,jdbcType=VARCHAR}	,
+			OnePaymentPrice = #{onePaymentPrice,jdbcType=DECIMAL}	,
+			SecondPaymentTime = #{secondPaymentTime,jdbcType=VARCHAR}	,
+			SecondPaymentPrice = #{secondPaymentPrice,jdbcType=DECIMAL}	,
+			By1 = #{by1,jdbcType=VARCHAR}	,
+			By2 = #{by2,jdbcType=VARCHAR}	,
+			By3 = #{by3,jdbcType=VARCHAR}	,
+			By4 = #{by4,jdbcType=VARCHAR}	,
+			By5 = #{by5,jdbcType=VARCHAR}
 		</set>
 		WHERE  ID = #{id,jdbcType=INTEGER}
 	</update>
-	
+
 	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-		select 
+		select
 		<include refid="Base_Column_List" />
-		from uservideo 
+		from uservideo
 		WHERE  ID = #{id,jdbcType=INTEGER}
 	</select>
 
@@ -293,7 +315,7 @@
 		<include refid="Uservideo_findPage"/>
 	</select>
 
-<!-- 总报表分页查询开始-->
+	<!-- 总报表分页查询开始-->
 	<sql id="limit_sql">
 		<if test="page_sql != null and page_sql != ''">
 			${page_sql}
@@ -301,25 +323,51 @@
 	</sql>
 
 	<sql id="where_all">
+
+		JOIN  videoinfo ON videoinfo.ID = uservideo.VideoID
+		JOIN u_user ON u_user.id = videoinfo.PromulgatorID
+
 		<where>
 			<if test="findContent != null and findContent !='' " >
 				and 1=1
 			</if>
+
+			<if test="startDate != null and startDate !='' " >
+				and left(OnePaymentTime,10) >= #{startDate,jdbcType=VARCHAR}
+			</if>
+			<if test="endDate != null and endDate !='' " >
+				and  #{endDate,jdbcType=VARCHAR} >=  left(OnePaymentTime,10)
+			</if>
+			<if test="videoName != null and videoName !='' " >
+				and (
+				LOWER(videoinfo.videoName) like LOWER(CONCAT("%",#{videoName,jdbcType=VARCHAR},"%"))
+				)
+			</if>
+			<if test="userName != null and userName !='' " >
+				and (
+				LOWER(u_user.nickname) like LOWER(CONCAT("%",#{userName,jdbcType=VARCHAR},"%"))
+				)
+			</if>
+
 		</where>
+
+		GROUP  BY VideoID
+
 	</sql>
-	<select id="findAll" resultMap="BaseResultMap" >
+	<select id="findAll" resultMap="ReportVideoResultMap" >
 		select
-		 *
+		u_user.nickname,videoinfo.VideoName,videoinfo.UploadDate,uservideo.OnePaymentTime, SUM( ifnull(OnePaymentPrice,0) ) + SUM(ifnull(SecondPaymentPrice,0))  as price ,COUNT(VideoID) as videocount,videoinfo.PromulgatorID,#{startDate,jdbcType=VARCHAR} as starttime,#{endDate,jdbcType=VARCHAR} as endtime,OnePaymentTime as playtime
 		from uservideo
+
 		<include refid="where_all"/>
 		<include refid="limit_sql" />
 	</select>
 
-	<select id="findCount" resultMap="BaseResultMap" >
-		select count(id) from  uservideo
+	<select id="findCount" resultMap="ReportVideoResultMap" >
+		select count(PromulgatorID) from  uservideo
 		<include refid="where_all" />
 	</select>
-<!-- 分页查询结束-->
+	<!-- 分页查询结束-->
 
 	<!-- 每日报表分页查询开始-->
 	<sql id="limit_sql_everyday">
@@ -329,22 +377,49 @@
 	</sql>
 
 	<sql id="where_all_everyday">
+
+		JOIN  videoinfo ON videoinfo.ID = uservideo.VideoID
+		JOIN u_user ON u_user.id = videoinfo.PromulgatorID
+
 		<where>
 			<if test="findContent != null and findContent !='' " >
 				and 1=1
 			</if>
+
+			<if test="startDate != null and startDate !='' " >
+				and left(OnePaymentTime,10) >= #{startDate,jdbcType=VARCHAR}
+			</if>
+			<if test="endDate != null and endDate !='' " >
+				and  #{endDate,jdbcType=VARCHAR} >=  left(OnePaymentTime,10)
+			</if>
+			<if test="videoName != null and videoName !='' " >
+				and (
+				LOWER(videoinfo.videoName) like LOWER(CONCAT("%",#{videoName,jdbcType=VARCHAR},"%"))
+				)
+			</if>
+			<if test="userName != null and userName !='' " >
+				and (
+				LOWER(u_user.nickname) like LOWER(CONCAT("%",#{userName,jdbcType=VARCHAR},"%"))
+				)
+			</if>
+
 		</where>
+
+		GROUP  BY VideoID,left(OnePaymentTime,10)
+
 	</sql>
-	<select id="findAll_everyday" resultMap="BaseResultMap" >
+	<select id="findAll_everyday" resultMap="ReportVideoResultMap" >
+
 		select
-		*
+		u_user.nickname,videoinfo.VideoName,videoinfo.UploadDate,uservideo.OnePaymentTime, SUM( ifnull(OnePaymentPrice,0) ) + SUM(ifnull(SecondPaymentPrice,0))  as price ,COUNT(VideoID) as videocount,videoinfo.PromulgatorID,#{startDate,jdbcType=VARCHAR} as starttime,#{endDate,jdbcType=VARCHAR} as endtime,OnePaymentTime as playtime
 		from uservideo
+
 		<include refid="where_all_everyday"/>
 		<include refid="limit_sql_everyday" />
 	</select>
 
-	<select id="findCount_everyday" resultMap="BaseResultMap" >
-		select count(id) from  uservideo
+	<select id="findCount_everyday" resultMap="ReportVideoResultMap" >
+		select count(PromulgatorID) from  uservideo
 		<include refid="where_all_everyday" />
 	</select>
 	<!-- 分页查询结束-->
