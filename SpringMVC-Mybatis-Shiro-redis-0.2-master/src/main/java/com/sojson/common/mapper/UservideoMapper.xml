@@ -356,7 +356,7 @@
 	</sql>
 	<select id="findAll" resultMap="ReportVideoResultMap" >
 		select
-		u_user.nickname,videoinfo.VideoName,videoinfo.UploadDate,uservideo.OnePaymentTime, SUM( ifnull(OnePaymentPrice,0) ) + SUM(ifnull(SecondPaymentPrice,0))  as price ,COUNT(VideoID) as videocount,videoinfo.PromulgatorID,#{startDate,jdbcType=VARCHAR} as starttime,#{endDate,jdbcType=VARCHAR} as endtime,OnePaymentTime as playtime
+		u_user.nickname,videoinfo.VideoName,videoinfo.UploadDate,uservideo.OnePaymentTime, SUM( ifnull(OnePaymentPrice,0) ) + SUM(ifnull(SecondPaymentPrice,0))  as price ,COUNT(VideoID) as videocount,VideoID as promulgatorid,#{startDate,jdbcType=VARCHAR} as starttime,#{endDate,jdbcType=VARCHAR} as endtime,OnePaymentTime as playtime
 		from uservideo
 
 		<include refid="where_all"/>
@@ -364,7 +364,7 @@
 	</select>
 
 	<select id="findCount" resultMap="ReportVideoResultMap" >
-		select count(PromulgatorID) from  uservideo
+		select count(VideoID) from  uservideo
 		<include refid="where_all" />
 	</select>
 	<!-- 分页查询结束-->
@@ -411,7 +411,7 @@
 	<select id="findAll_everyday" resultMap="ReportVideoResultMap" >
 
 		select
-		u_user.nickname,videoinfo.VideoName,videoinfo.UploadDate,uservideo.OnePaymentTime, SUM( ifnull(OnePaymentPrice,0) ) + SUM(ifnull(SecondPaymentPrice,0))  as price ,COUNT(VideoID) as videocount,videoinfo.PromulgatorID,#{startDate,jdbcType=VARCHAR} as starttime,#{endDate,jdbcType=VARCHAR} as endtime,OnePaymentTime as playtime
+		u_user.nickname,videoinfo.VideoName,videoinfo.UploadDate,uservideo.OnePaymentTime, SUM( ifnull(OnePaymentPrice,0) ) + SUM(ifnull(SecondPaymentPrice,0))  as price ,COUNT(VideoID) as videocount,VideoID as promulgatorid,#{startDate,jdbcType=VARCHAR} as starttime,#{endDate,jdbcType=VARCHAR} as endtime,OnePaymentTime as playtime
 		from uservideo
 
 		<include refid="where_all_everyday"/>
@@ -419,7 +419,7 @@
 	</select>
 
 	<select id="findCount_everyday" resultMap="ReportVideoResultMap" >
-		select count(PromulgatorID) from  uservideo
+		select count(VideoID) from  uservideo
 		<include refid="where_all_everyday" />
 	</select>
 	<!-- 分页查询结束-->
