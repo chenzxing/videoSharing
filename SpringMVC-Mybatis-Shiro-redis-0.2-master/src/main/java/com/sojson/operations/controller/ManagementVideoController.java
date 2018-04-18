@@ -211,6 +211,22 @@ public class ManagementVideoController  extends BaseController {
     @ResponseBody
     public Map<String,Object> addVideo(Video video){
         try {
+
+            String maxPrice = video.getMaxPrice();
+            if(maxPrice == null || maxPrice =="")
+            {
+                maxPrice = "0";
+            }
+            String minPrice = video.getMinPrice();
+            if(minPrice == null || minPrice =="")
+            {
+                minPrice = "0";
+            }
+            String maxFixedPrice = video.getFixedPrice();
+            if(maxFixedPrice == null || maxFixedPrice =="")
+            {
+                maxFixedPrice = "0";
+            }
             Date date = new Date();
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             String dateString =  sdf.format(date);
@@ -219,9 +235,9 @@ public class ManagementVideoController  extends BaseController {
             video.setStatus((long)1);
             video.setPassed((long)1);
             video.setPassedTiime(dateString);
-            video.setMaxPrice((BigDecimal) video.getMaxPrice());
-            video.setMinPrice((BigDecimal) video.getMinPrice());
-            video.setFixedPrice((BigDecimal) video.getFixedPrice());
+            video.setMaxPrice(maxPrice);
+            video.setMinPrice(minPrice);
+            video.setFixedPrice(maxFixedPrice);
 
             //获取当前登录用户的id
             Long userId = TokenManager.getToken().getId();

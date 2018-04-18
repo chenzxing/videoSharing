@@ -26,11 +26,11 @@ public class Video implements Serializable {
     /**0：随机价格 1：固定价格*/
     private Long IsFixedPrice;
     /**固定价格*/
-    private BigDecimal FixedPrice;
+    private String FixedPrice;
     /**视频最低价格*/
-    private BigDecimal MinPrice;
+    private String MinPrice;
     /**视频最高价格*/
-    private BigDecimal MaxPrice;
+    private String MaxPrice;
     /**修改时间*/
     private String UpdateTime;
     /**上传时间*/
@@ -198,29 +198,29 @@ public class Video implements Serializable {
     }
 
 
-    public BigDecimal getFixedPrice() {
+    public String getFixedPrice() {
         return FixedPrice;
     }
 
-    public void setFixedPrice(BigDecimal fixedPrice) {
+    public void setFixedPrice(String fixedPrice) {
         this.FixedPrice = fixedPrice;
     }
 
 
-    public BigDecimal getMinPrice() {
+    public String getMinPrice() {
         return MinPrice;
     }
 
-    public void setMinPrice(BigDecimal minPrice) {
+    public void setMinPrice(String minPrice) {
         this.MinPrice = minPrice;
     }
 
 
-    public BigDecimal getMaxPrice() {
+    public String getMaxPrice() {
         return MaxPrice;
     }
 
-    public void setMaxPrice(BigDecimal maxPrice) {
+    public void setMaxPrice(String maxPrice) {
         this.MaxPrice = maxPrice;
     }
 

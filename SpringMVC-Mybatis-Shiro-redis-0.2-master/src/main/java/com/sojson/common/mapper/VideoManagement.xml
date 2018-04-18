@@ -116,23 +116,23 @@
   <update id="updateVideoInfo" parameterType="com.sojson.common.model.Video" >
     update videoinfo
     <set >
-    <if test="VideoName != null" >
+    <if test="VideoName != null  and VideoName != ''" >
       VideoName = #{VideoName,jdbcType=VARCHAR},
     </if>
-      <if test="IsFixedPrice != null" >
+      <if test="IsFixedPrice != null " >
         IsFixedPrice = #{IsFixedPrice,jdbcType=BIGINT},
       </if>
 
-      <if test="FixedPrice != null" >
+      <if test="FixedPrice != null and FixedPrice != ''" >
         FixedPrice = #{FixedPrice,jdbcType=DECIMAL},
       </if>
-      <if test="MinPrice != null" >
+      <if test="MinPrice != null and MinPrice != ''" >
         MinPrice = #{MinPrice,jdbcType=DECIMAL},
       </if>
-      <if test="MaxPrice != null" >
+      <if test="MaxPrice != null and MaxPrice != ''" >
         MaxPrice = #{MaxPrice,jdbcType=DECIMAL},
       </if>
-      <if test="UpdateTime != null" >
+      <if test="UpdateTime != null and UpdateTime != ''" >
         UpdateTime = #{UpdateTime,jdbcType=VARCHAR},
       </if>
     </set >
