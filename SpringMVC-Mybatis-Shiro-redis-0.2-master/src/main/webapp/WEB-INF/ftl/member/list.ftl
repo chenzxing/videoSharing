@@ -372,6 +372,8 @@
 							<th><input type="checkbox" id="checkAll"/></th>
 							<th>昵称</th>
 							<th>Email/帐号</th>
+							<th>姓名</th>
+							<th>身份证号码</th>
 							<th>登录状态</th>
 							<th>创建时间</th>
 							<th>最后登录时间</th>
@@ -383,6 +385,8 @@
 									<td><input value="${it.id}" check='box' type="checkbox" /></td>
 									<td>${it.nickname?default('未设置')}</td>
 									<td>${it.email?default('未设置')}</td>
+									<td>${it.fullName?default('未设置')}</td>
+									<td>${it.idNumber?default('未设置')}</td>
 									<td>${(it.status==1)?string('有效','禁止')}</td>
 									<td>${it.createTime?string('yyyy-MM-dd HH:mm')}</td>
 									<td>${it.lastLoginTime?string('yyyy-MM-dd HH:mm')}</td>
