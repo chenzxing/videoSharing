@@ -266,7 +266,7 @@ public class ManagementVideoController  extends BaseController {
     @ResponseBody
     public Map<String,Object> uploadVideo(@RequestParam MultipartFile file){
         try {
-            String url= "";
+            String url= IConfig.get("domain.url");
             //String url= "/Video/";
             String guid = UUID.randomUUID().toString();
             boolean result =false;
@@ -292,7 +292,7 @@ public class ManagementVideoController  extends BaseController {
                 // String filePath = "F://"+url+currentTime+newName+extName;
                 //   file.transferTo(new File(filePath));
 
-                connect(IConfig.get("domain.url"), IConfig.get("domain.ftpip"), 21, IConfig.get("domain.ftpuser"), IConfig.get("domain.ftppwd"));
+                connect(url, IConfig.get("domain.ftpip"), 21, IConfig.get("domain.ftpuser"), IConfig.get("domain.ftppwd"));
 
                 InputStream inputStream = file.getInputStream();
                // FileInputStream input = (FileInputStream) (inputStream);
@@ -305,7 +305,7 @@ public class ManagementVideoController  extends BaseController {
             {
                 resultMap.put("fileName", fileName);
                 resultMap.put("extName", extName);
-                resultMap.put("url", url);
+                resultMap.put("url","Video/" + url);
                 resultMap.put("currentTime", currentTime+guid.substring(0,4) );
                 resultMap.put("status", 200);
                 resultMap.put("successCount", "添加视频成功");
