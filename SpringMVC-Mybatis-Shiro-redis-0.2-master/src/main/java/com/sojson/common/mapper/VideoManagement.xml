@@ -27,7 +27,7 @@
 
   </resultMap>
   <sql id="Base_Column_List" >
-    videoinfo.ID, PromulgatorID, VideoName, VideoAddress,SKB, Alias,QRCodeAddress,IsFixedPrice,FixedPrice,MinPrice,MaxPrice,UpdateTime,UploadDate,Passed,PassedTiime,videoinfo.Status,By1,By2,By3,By4,By5,u_user.nickname as UserName
+    videoinfo.ID, PromulgatorID, VideoName, VideoAddress,SKB, Alias,QRCodeAddress,IsFixedPrice,FixedPrice,MinPrice,MaxPrice,UpdateTime,UploadDate,Passed,PassedTiime,videoinfo.Status,By1,By2,By3,By4,By5,u_user.full_name as UserName
   </sql>
   <sql id="limit_sql">
   	   <if test="page_sql != null and page_sql != ''">
@@ -52,7 +52,7 @@
   </sql>
   <select id="findAll" resultMap="BaseResultMap" >
     select
-    videoinfo.ID, PromulgatorID, VideoName, VideoAddress,SKB, Alias,QRCodeAddress,IsFixedPrice,FixedPrice,MinPrice,MaxPrice,UpdateTime,UploadDate,Passed,PassedTiime,videoinfo.Status,By1,By2,By3,By4,By5,u_user.nickname as UserName
+    videoinfo.ID, PromulgatorID, VideoName, VideoAddress,SKB, Alias,QRCodeAddress,IsFixedPrice,FixedPrice,MinPrice,MaxPrice,UpdateTime,UploadDate,Passed,PassedTiime,videoinfo.Status,By1,By2,By3,By4,By5,u_user.full_name as UserName
 
     from videoinfo join u_user on u_user.id = videoinfo.PromulgatorID
 

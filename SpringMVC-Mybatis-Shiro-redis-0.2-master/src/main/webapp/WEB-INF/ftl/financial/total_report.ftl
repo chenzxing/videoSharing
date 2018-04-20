@@ -99,7 +99,7 @@
                                         <td>${it.endtime?default('未设置')}</td>
                                         <td>${it.videocount?default('未设置')}</td>
                                         <td>${it.price?default('未设置')}</td>
-                                        <td>${it.nickname?default('未设置')}</td>
+                                        <td>${it.full_name?default('未设置')}</td>
                                         <td>${it.uploaddate?default('未设置')}</td>
                                     </tr>
                                 </#list>

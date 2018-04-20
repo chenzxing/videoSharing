@@ -5,12 +5,13 @@ import net.sf.json.JSONObject;
 
 public class ReportVideo implements Serializable {
 
-    public String getNickname() {
-        return nickname;
+
+    public String getFull_name() {
+        return full_name;
     }
 
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
+    public void setFull_name(String full_name) {
+        this.full_name = full_name;
     }
 
     public String getVideoname() {
@@ -70,7 +71,7 @@ public class ReportVideo implements Serializable {
     }
 
     //用户名
-    private String nickname;
+    private String full_name;
     /**视频名称*/
     private String videoname;
     /**视频名称上传时间*/

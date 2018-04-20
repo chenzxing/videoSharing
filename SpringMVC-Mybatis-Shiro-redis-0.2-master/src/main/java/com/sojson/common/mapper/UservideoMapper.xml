@@ -37,7 +37,7 @@
 		<result property="playtime" column="playtime" jdbcType="VARCHAR" />
 		<result property="uploaddate" column="uploaddate" jdbcType="VARCHAR" />
 		<result property="videoname" column="videoname" jdbcType="VARCHAR" />
-		<result property="nickname" column="nickname" jdbcType="VARCHAR" />
+		<result property="full_name" column="full_name" jdbcType="VARCHAR" />
 
 
 	</resultMap>
@@ -345,7 +345,7 @@
 			</if>
 			<if test="userName != null and userName !='' " >
 				and (
-				LOWER(u_user.nickname) like LOWER(CONCAT("%",#{userName,jdbcType=VARCHAR},"%"))
+				LOWER(u_user.full_name) like LOWER(CONCAT("%",#{userName,jdbcType=VARCHAR},"%"))
 				)
 			</if>
 
@@ -356,7 +356,7 @@
 	</sql>
 	<select id="findAll" resultMap="ReportVideoResultMap" >
 		select
-		u_user.nickname,videoinfo.VideoName,videoinfo.UploadDate,uservideo.OnePaymentTime, SUM( ifnull(OnePaymentPrice,0) ) + SUM(ifnull(SecondPaymentPrice,0))  as price ,COUNT(VideoID) as videocount,VideoID as promulgatorid,#{startDate,jdbcType=VARCHAR} as starttime,#{endDate,jdbcType=VARCHAR} as endtime,OnePaymentTime as playtime
+		u_user.full_name,videoinfo.VideoName,videoinfo.UploadDate,uservideo.OnePaymentTime, SUM( ifnull(OnePaymentPrice,0) ) + SUM(ifnull(SecondPaymentPrice,0))  as price ,COUNT(VideoID) as videocount,VideoID as promulgatorid,#{startDate,jdbcType=VARCHAR} as starttime,#{endDate,jdbcType=VARCHAR} as endtime,OnePaymentTime as playtime
 		from uservideo
 
 		<include refid="where_all"/>
@@ -399,7 +399,7 @@
 			</if>
 			<if test="userName != null and userName !='' " >
 				and (
-				LOWER(u_user.nickname) like LOWER(CONCAT("%",#{userName,jdbcType=VARCHAR},"%"))
+				LOWER(u_user.full_name) like LOWER(CONCAT("%",#{userName,jdbcType=VARCHAR},"%"))
 				)
 			</if>
 
@@ -411,7 +411,7 @@
 	<select id="findAll_everyday" resultMap="ReportVideoResultMap" >
 
 		select
-		u_user.nickname,videoinfo.VideoName,videoinfo.UploadDate,uservideo.OnePaymentTime, SUM( ifnull(OnePaymentPrice,0) ) + SUM(ifnull(SecondPaymentPrice,0))  as price ,COUNT(VideoID) as videocount,VideoID as promulgatorid,#{startDate,jdbcType=VARCHAR} as starttime,#{endDate,jdbcType=VARCHAR} as endtime,OnePaymentTime as playtime
+		u_user.full_name,videoinfo.VideoName,videoinfo.UploadDate,uservideo.OnePaymentTime, SUM( ifnull(OnePaymentPrice,0) ) + SUM(ifnull(SecondPaymentPrice,0))  as price ,COUNT(VideoID) as videocount,VideoID as promulgatorid,#{startDate,jdbcType=VARCHAR} as starttime,#{endDate,jdbcType=VARCHAR} as endtime,OnePaymentTime as playtime
 		from uservideo
 
 		<include refid="where_all_everyday"/>

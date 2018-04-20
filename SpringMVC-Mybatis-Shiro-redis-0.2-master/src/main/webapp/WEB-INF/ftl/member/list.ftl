@@ -273,11 +273,14 @@
                         var add_html ="";
                         var edit_html ="";
                         $.each(result,function(){
+                            //系统管理员角色不可选择
+                            if(this.id!=1){
                             //新增用户的角色
                             add_html=add_html+"<label><input type='checkbox' id='role_"+this.id+"' name='add_role' value='"+this.id+"'>"+this.name+"</label>&nbsp;&nbsp;";
                             //修改用户的角色
                             edit_html=edit_html+"<label><input type='checkbox' id='edit_role_"+this.id+"' name='edit_role' value='"+this.id+"'>"+this.name+"</label>&nbsp;&nbsp;";
-                        });
+                            }
+						});
                         $("#role_btn").html(add_html);
                         $("#edit_role_btn").html(edit_html);
                         return;
